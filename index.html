@@ -1,124 +1,63 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnimeDexTR - Anime İzle</title>
-    
-    <link href="./css/index.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        /* Listeyi düzgün hizalamak için küçük bir ekleme */
-        #anime-listesi {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            padding: 20px;
-        }
-        /* Yükleniyor animasyonunu ortalamak için */
-        #yukleniyor {
-            text-align: center;
-            padding: 50px;
-            color: white;
-            font-family: sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-    <header id="head-div">
-        <div id="title1">
-            <a href="./index.html" style="font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 30px; color: white; text-decoration: none;">
-                ANIME<span style="color: #eb3349;">DEX</span>TR
-            </a>
-        </div>
-        <div id="search-div">
-            <form onsubmit="event.preventDefault(); aramaYap();">
-                <input type="text" id="query" placeholder="Anime ara..." required />
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
+
+    <header>
+        <a href="index.html" class="logo">ANIME<span>DEX</span>TR</a>
+        <div class="search-box">
+            <input type="text" id="aramaInput" placeholder="Anime Ara..." onkeyup="aramaYap()">
+            <i class="fa fa-search"></i>
         </div>
     </header>
 
-    <section>
-        <div class="divox">
-            <h2 id="liste-basligi" style="text-align: center; margin-top: 20px;">Tüm Seriler</h2>
-            
-            <div id="yukleniyor">
-                <i class="fa fa-spinner fa-spin" style="font-size: 30px;"></i>
-                <p>Liste Yükleniyor...</p>
+    <div class="hero-section">
+        <h2 class="section-title">Popüler Seriler</h2>
+        <div id="anime-listesi">
             </div>
+    </div>
 
-            <div id="anime-listesi"></div>
-        </div>
-    </section>
-
-    <hr style="border-color: #333;" />
-    
-    <footer>
-        <div>
-            <a href="#">AnimeDexTR &copy; 2024</a> | 
-            <a href="#">İletişim</a>
-        </div>
-    </footer>
+    <script src="veri/seriler.js"></script>
 
     <script>
-        // Veri dosyamızın yolu
-        const VERI_YOLU = 'veri/seriler.json';
+        const listeDiv = document.getElementById('anime-listesi');
 
-        // Sayfa açılınca çalışacak fonksiyon
-        document.addEventListener("DOMContentLoaded", () => {
-            fetch(VERI_YOLU)
-                .then(cevap => {
-                    if (!cevap.ok) throw new Error("Veri dosyası bulunamadı!");
-                    return cevap.json();
-                })
-                .then(veriler => {
-                    // Yükleniyor yazısını kaldır
-                    document.getElementById('yukleniyor').style.display = 'none';
-                    
-                    const listeDiv = document.getElementById('anime-listesi');
-                    
-                    // Her bir anime için kart oluştur
-                    veriler.forEach(anime => {
-                        // HTML Şablonu (Senin CSS sınıflarını kullandım: la-anime, poster vb.)
-                        const kartHTML = `
-                            <a href="izle.html?id=${anime.id}" title="${anime.isim}">
-                                <div class="poster la-anime" style="width: 160px; margin: 10px;">
-                                    <div id="shadow1" class="shadow">
-                                        <div class="dubb">${anime.bolumSayisi || '?'} BÖLÜM</div>
-                                    </div>
-                                    <div id="shadow2" class="shadow">
-                                        <img class="lzy_img" src="${anime.poster}" alt="${anime.isim}" style="height: 230px; object-fit: cover; width: 100%;">
-                                    </div>
-                                    <div class="la-details">
-                                        <h3 style="font-size: 14px; margin-top: 5px;">${anime.isim}</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        `;
-                        listeDiv.innerHTML += kartHTML;
-                    });
-                })
-                .catch(hata => {
-                    document.getElementById('yukleniyor').innerHTML = `<p style="color:red;">Hata: ${hata.message}<br>Lütfen 'veri/seriler.json' dosyasını kontrol edin.</p>`;
-                });
-        });
+        // Serileri Listele
+        if (typeof TUM_SERILER !== 'undefined') {
+            TUM_SERILER.forEach(anime => {
+                const html = `
+                <a href="izle.html?id=${anime.id}" class="anime-card">
+                    <div class="poster-wrapper">
+                        <img src="${anime.poster}" alt="${anime.isim}" loading="lazy">
+                        <div class="ep-badge">${anime.bolumSayisi} BÖLÜM</div>
+                    </div>
+                    <div class="card-info">
+                        <div class="anime-title">${anime.isim}</div>
+                    </div>
+                </a>`;
+                listeDiv.innerHTML += html;
+            });
+        } else {
+            listeDiv.innerHTML = "<h3 style='color:white'>Veri dosyası bulunamadı!</h3>";
+        }
 
-        // Basit Arama Fonksiyonu
+        // Basit Arama
         function aramaYap() {
-            const aranan = document.getElementById('query').value.toLowerCase();
-            const kartlar = document.getElementsByClassName('poster');
-            
-            for (let kart of kartlar) {
-                const isim = kart.innerText.toLowerCase();
-                if (isim.includes(aranan)) {
-                    kart.parentElement.style.display = "block";
+            const input = document.getElementById('aramaInput').value.toLowerCase();
+            const cards = document.getElementsByClassName('anime-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].querySelector(".anime-title").innerText.toLowerCase();
+                if (title.includes(input)) {
+                    cards[i].style.display = "";
                 } else {
-                    kart.parentElement.style.display = "none";
+                    cards[i].style.display = "none";
                 }
             }
         }
