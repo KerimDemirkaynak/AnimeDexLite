@@ -1,0 +1,34 @@
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const animeId = urlParams.get('id'); // Linkten "beyblade" yazısını al
+
+    // Sadece ilgili animenin dosyasını çek!
+    // Yani "veri/detaylar/beyblade.json" dosyasını okuyor.
+    fetch(`veri/detaylar/${animeId}.json`)
+        .then(cevap => {
+            if (!cevap.ok) throw new Error("Anime Bulunamadı");
+            return cevap.json();
+        })
+        .then(anime => {
+            document.getElementById('baslik').innerText = anime.isim;
+            document.getElementById('ozet').innerText = anime.ozet;
+
+            const listeDiv = document.getElementById('liste');
+            const oynatici = document.getElementById('oynatici');
+
+            anime.bolumler.forEach(bolum => {
+                const btn = document.createElement('a');
+                btn.className = 'bolum-btn';
+                btn.innerText = `${bolum.no}. Bölüm - ${bolum.baslik}`;
+                
+                btn.onclick = () => {
+                    oynatici.innerHTML = `<iframe src="${bolum.link}" allowfullscreen></iframe>`;
+                };
+                
+                listeDiv.appendChild(btn);
+            });
+        })
+        .catch(hata => {
+            document.body.innerHTML = "<h1>Bu anime henüz eklenmemiş.</h1>";
+        });
+</script>
