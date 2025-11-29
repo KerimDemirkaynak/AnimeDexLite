@@ -1,4 +1,4 @@
-/* ANIME TEMASI - FINAL (RESTORED V9) */
+/* ANIME TEMASI - FINAL (V10 - KÜÇÜK ARAMA) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -38,26 +38,26 @@ header {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    height: 65px;
+    height: 60px; /* Header yüksekliği biraz düşürüldü */
 }
 
 .logo { display: flex; align-items: center; height: 100%; }
-.logo img { height: 30px; width: auto; object-fit: contain; }
+.logo img { height: 28px; width: auto; object-fit: contain; }
 
-/* Arama Kutusu (ESKİ HALİNE DÖNDÜ) */
+/* Arama Kutusu (KÜÇÜLTÜLDÜ) */
 .search-box {
     position: relative;
-    width: 300px;
+    width: 220px; /* Genişlik 300px'den 220px'e düştü */
 }
 .search-box input {
     width: 100%;
     background: #000;
     border: 1px solid #333;
-    padding: 10px 40px 10px 20px; /* Buton için sağda boşluk */
-    border-radius: 20px;
+    padding: 6px 35px 6px 15px; /* Daha ince yapıldı */
+    border-radius: 15px;
     color: white;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 12px; /* Yazı boyutu hafif küçültüldü */
     transition: all 0.3s;
 }
 .search-box input:focus { border-color: var(--primary); }
@@ -71,8 +71,8 @@ header {
     border: none;
     color: var(--text-gray);
     cursor: pointer;
-    font-size: 16px;
-    padding: 8px;
+    font-size: 14px;
+    padding: 5px;
     transition: 0.3s;
 }
 .search-btn:hover { color: var(--primary); }
@@ -126,7 +126,9 @@ header {
 
 /* Anime Kartı */
 .anime-card {
-    position: relative; border-radius: var(--card-radius); overflow: hidden;
+    position: relative; 
+    border-radius: var(--card-radius); 
+    overflow: hidden;
     background: var(--bg-card);
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -152,7 +154,10 @@ header {
     backdrop-filter: blur(2px);
 }
 .anime-card:hover .hover-play { opacity: 1; }
-.hover-play i { font-size: 45px; color: var(--primary); filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
+.hover-play i { 
+    font-size: 45px; color: var(--primary); 
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+}
 
 .card-info { padding: 15px; }
 .anime-title {
@@ -169,7 +174,7 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-/* --- İZLEME SAYFASI (ESKİ DÜZEN GERİ GELDİ) --- */
+/* --- İZLEME SAYFASI --- */
 .watch-container {
     display: flex; gap: 30px; max-width: 1400px; margin: 30px auto; padding: 0 20px;
     align-items: flex-start;
@@ -190,12 +195,8 @@ header {
 .anime-info-box h1 { color: var(--primary); margin-bottom: 15px; font-size: 26px; font-weight: 700; }
 .anime-info-box p { color: #ccc; font-size: 14px; line-height: 1.7; }
 
-/* Yorumlar */
 .comments-section { background: var(--bg-card); padding: 25px; border-radius: 12px; }
-.comments-section h2 { 
-    font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid #333; 
-    padding-bottom: 15px; color: white;
-}
+.comments-section h2 { font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; color: white; }
 
 /* Bölüm Listesi */
 .ep-list-header {
@@ -231,6 +232,8 @@ footer {
     .hero-wrapper { height: 350px; }
     .hero-poster { display: none; }
     .hero-info h2 { font-size: 28px; }
-    .search-box { width: 100%; max-width: 200px; }
+    .search-box { width: 40px; } 
+    .search-box input { padding: 0; width: 0; border: none; background: transparent; }
+    .search-btn { position: static; color: white; font-size: 20px; padding: 0; right: 0; }
     #anime-listesi { grid-template-columns: repeat(2, 1fr); gap: 15px; } 
 }
