@@ -1,4 +1,4 @@
-[
+const TUM_SERILER = [
   {
     "id": "beyblade",
     "isim": "Beyblade (1. Sezon)",
@@ -8,7 +8,7 @@
   {
     "id": "pokemon",
     "isim": "Pokemon",
-    "poster": "https://upload.wikimedia.org/wikipedia/tr/9/94/Pokemon_poster.jpg",
+    "poster": "./static/pokemon-poster.jpg",
     "bolumSayisi": "276"
   }
-]
+];
