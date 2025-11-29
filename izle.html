@@ -1,34 +1,223 @@
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const animeId = urlParams.get('id'); // Linkten "beyblade" yazısını al
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime İzle - AnimeDexTR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { 
+            background-color: #14151a; 
+            color: #ccc; 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; 
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
 
-    // Sadece ilgili animenin dosyasını çek!
-    // Yani "veri/detaylar/beyblade.json" dosyasını okuyor.
-    fetch(`veri/detaylar/${animeId}.json`)
-        .then(cevap => {
-            if (!cevap.ok) throw new Error("Anime Bulunamadı");
-            return cevap.json();
-        })
-        .then(anime => {
-            document.getElementById('baslik').innerText = anime.isim;
-            document.getElementById('ozet').innerText = anime.ozet;
+        /* Üst Menü */
+        header {
+            background: linear-gradient(to right, #eb3349, #f45c43);
+            padding: 15px;
+            text-align: center;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-            const listeDiv = document.getElementById('liste');
-            const oynatici = document.getElementById('oynatici');
+        /* Ana Düzen */
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden; /* Sayfa taşmasını engelle */
+        }
 
-            anime.bolumler.forEach(bolum => {
-                const btn = document.createElement('a');
-                btn.className = 'bolum-btn';
-                btn.innerText = `${bolum.no}. Bölüm - ${bolum.baslik}`;
-                
-                btn.onclick = () => {
-                    oynatici.innerHTML = `<iframe src="${bolum.link}" allowfullscreen></iframe>`;
-                };
-                
-                listeDiv.appendChild(btn);
+        /* Sol Taraf: Video Alanı */
+        .video-bolumu {
+            flex: 3;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Video Oynatıcı Çerçevesi */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Oranı */
+            height: 0;
+            background: #000;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Başlık ve Özet */
+        h1#baslik {
+            color: #ed3832;
+            margin-top: 0;
+        }
+        p#ozet {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Sağ Taraf: Bölüm Listesi */
+        .liste-bolumu {
+            flex: 1;
+            background-color: #202125;
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .liste-baslik {
+            padding: 15px;
+            background-color: #27272c;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        #bolum-listesi {
+            overflow-y: auto; /* Sadece listenin kaymasını sağlar */
+            flex: 1;
+            padding: 10px;
+        }
+
+        /* Bölüm Butonları */
+        .bolum-btn {
+            display: block;
+            background-color: #35373d;
+            color: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 13px;
+        }
+        .bolum-btn:hover {
+            background-color: #ed3832;
+            color: white;
+        }
+        .bolum-btn i {
+            margin-right: 8px;
+        }
+
+        /* Mobilde Alt Alta Geç */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .liste-bolumu {
+                max-width: none;
+                border-left: none;
+                border-top: 1px solid #333;
+                height: 300px; /* Mobilde liste yüksekliği */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html">ANIME<span style="color: #000;">DEX</span>TR</a>
+    </header>
+
+    <div class="container">
+        <div class="video-bolumu">
+            <div class="video-container" id="oynatici">
+                <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#666;">
+                    <p><i class="fa fa-play-circle" style="font-size:50px;"></i><br>Listeden bir bölüm seçin</p>
+                </div>
+            </div>
+            
+            <h1 id="baslik">Yükleniyor...</h1>
+            <p id="ozet">Lütfen bekleyin, anime bilgileri getiriliyor...</p>
+        </div>
+
+        <div class="liste-bolumu">
+            <div class="liste-baslik">BÖLÜMLER</div>
+            <div id="bolum-listesi">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // URL'den ?id= kısmını al (Örn: izle.html?id=beyblade)
+        const urlParams = new URLSearchParams(window.location.search);
+        const animeId = urlParams.get('id');
+
+        // İlgili JSON dosyasını oku
+        fetch(`veri/detaylar/${animeId}.json`)
+            .then(cevap => {
+                // Dosya bulunamazsa (404) hata fırlat
+                if (!cevap.ok) throw new Error("Dosya bulunamadı");
+                return cevap.json();
+            })
+            .then(anime => {
+                // 1. Anime Başlığı ve Özetini Yerleştir
+                document.getElementById('baslik').innerText = anime.isim;
+                document.getElementById('ozet').innerText = anime.ozet;
+                document.title = `${anime.isim} - AnimeDexTR`;
+
+                const listeDiv = document.getElementById('bolum-listesi');
+                const oynatici = document.getElementById('oynatici');
+
+                // 2. Bölüm Butonlarını Oluştur
+                anime.bolumler.forEach((bolum, index) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'bolum-btn';
+                    btn.innerHTML = `<i class="fa fa-play"></i> ${bolum.no}. Bölüm - ${bolum.baslik}`;
+                    
+                    // Butona tıklayınca ne olsun?
+                    btn.onclick = () => {
+                        // Videoyu değiştir
+                        oynatici.innerHTML = `<iframe src="${bolum.link}" allowfullscreen></iframe>`;
+                        // Başlığı güncelle
+                        document.getElementById('baslik').innerText = `${anime.isim} - ${bolum.no}. Bölüm`;
+                        // Sayfayı yukarı kaydır (mobilde kullanışlı)
+                        window.scrollTo(0,0);
+                    };
+                    
+                    listeDiv.appendChild(btn);
+
+                    // Sayfa ilk açıldığında otomatik olarak 1. bölümü aç (İsteğe bağlı)
+                    if (index === 0) {
+                        btn.click();
+                    }
+                });
+            })
+            .catch(hata => {
+                // Hata olursa ekranı temizle ve mesaj göster
+                document.body.innerHTML = `
+                    <div style="text-align:center; padding:50px; color:white;">
+                        <h1 style="color:#ed3832;">Bu Anime Henüz Eklenmemiş!</h1>
+                        <p>Aradığınız dosya: <b>veri/detaylar/${animeId}.json</b> bulunamadı.</p>
+                        <a href="index.html" style="color:white; text-decoration:underline;">Ana Sayfaya Dön</a>
+                    </div>
+                `;
+                console.error(hata);
             });
-        })
-        .catch(hata => {
-            document.body.innerHTML = "<h1>Bu anime henüz eklenmemiş.</h1>";
-        });
-</script>
+    </script>
+
+</body>
+</html>
