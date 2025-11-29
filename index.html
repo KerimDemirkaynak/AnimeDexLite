@@ -14,37 +14,17 @@
         <a href="index.html" class="logo">
             <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
         </a>
-        
-        <form onsubmit="event.preventDefault(); aramaYap();" class="search-container">
-            <input type="text" id="aramaInput" placeholder="Anime ara..." required autocomplete="off">
-            <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="search-box">
+            <form onsubmit="event.preventDefault(); aramaYap();">
+                <input type="text" id="aramaInput" placeholder="Anime ara..." required>
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
     </header>
 
-    <div class="hero-wrapper" id="spotlight-area" style="display:none;">
-        <div class="hero-bg" id="hero-bg"></div>
-        <div class="hero-content">
-            <img src="" class="hero-poster" id="hero-poster">
-            <div class="hero-info">
-                <div class="hero-meta">
-                    <span><i class="fa fa-circle-play"></i> TV Serisi</span>
-                    <span><i class="fa fa-calendar"></i> Güncel</span>
-                    <span style="background: var(--primary); color:black; padding:2px 6px; border-radius:3px; font-weight:bold;">HD</span>
-                </div>
-                <h2 id="hero-title">Yükleniyor...</h2>
-                <p id="hero-desc" style="color:#ddd; margin-bottom:20px; line-height:1.5; max-width:600px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">...</p>
-                <a href="#" class="btn-watch" id="hero-btn"><i class="fa fa-play"></i> Hemen İzle</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="section-header">
-            <h2>Tüm Seriler</h2>
-        </div>
-        <div id="anime-listesi">
-            <div style="color: #666; text-align: center; width: 100%;">Liste Yükleniyor...</div>
-        </div>
+    <div class="hero-section">
+        <h2 class="section-title">Popüler Seriler</h2>
+        <div id="anime-listesi"></div>
     </div>
 
     <footer>
@@ -55,64 +35,41 @@
 
     <script src="veri/seriler.js"></script>
     <script>
-        // Footer Yılı
+        // Footer Yılı Otomatik
         document.getElementById('yil').innerText = new Date().getFullYear();
 
         const listeDiv = document.getElementById('anime-listesi');
 
-        window.addEventListener('load', () => {
-            if (typeof TUM_SERILER !== 'undefined') {
-                listeDiv.innerHTML = "";
-                
-                // KARTLARI OLUŞTUR
-                TUM_SERILER.forEach(anime => {
-                    const html = `
-                    <a href="izle.html?id=${anime.id}" class="anime-card">
-                        <div class="poster-box">
-                            <span class="ep-tag">${anime.bolumSayisi}</span>
-                            <img src="${anime.poster}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Resim+Yok'">
-                            <div class="hover-play"><i class="fa fa-play-circle"></i></div>
-                        </div>
-                        <div class="card-info">
-                            <span class="anime-title">${anime.isim}</span>
-                            <div class="anime-meta">
-                                <span>TV</span>
-                                <span>Anime</span>
-                            </div>
-                        </div>
-                    </a>`;
-                    listeDiv.innerHTML += html;
-                });
-
-                // SPOTLIGHT (Rastgele Anime ve Özet Çekme)
-                const urlParams = new URLSearchParams(window.location.search);
-                if (!urlParams.get('q') && TUM_SERILER.length > 0) {
-                    const randomAnime = TUM_SERILER[Math.floor(Math.random() * TUM_SERILER.length)];
-                    
-                    document.getElementById('spotlight-area').style.display = 'flex';
-                    document.getElementById('hero-bg').style.backgroundImage = `url('${randomAnime.poster}')`;
-                    document.getElementById('hero-poster').src = randomAnime.poster;
-                    document.getElementById('hero-title').innerText = randomAnime.isim;
-                    document.getElementById('hero-btn').href = `izle.html?id=${randomAnime.id}`;
-
-                    const script = document.createElement('script');
-                    script.src = `veri/detaylar/${randomAnime.id}.js`;
-                    script.onload = function() {
-                        if (typeof ANIME_DETAY !== 'undefined') {
-                            document.getElementById('hero-desc').innerText = ANIME_DETAY.ozet || "Özet bilgisi bulunamadı.";
-                            window.ANIME_DETAY = undefined; 
-                        }
-                    };
-                    document.body.appendChild(script);
-                } else if (urlParams.get('q')) {
-                    // Linkten arama gelmişse
-                    document.getElementById('aramaInput').value = urlParams.get('q');
-                    aramaYap();
-                }
+        if (typeof TUM_SERILER !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const aranan = urlParams.get('q');
+            
+            // Eğer URL'de arama varsa inputa yaz
+            if(aranan) {
+                document.getElementById('aramaInput').value = aranan;
             }
-        });
 
-        // ARAMA FONKSİYONU
+            TUM_SERILER.forEach(anime => {
+                const html = `
+                <a href="izle.html?id=${anime.id}" class="anime-card">
+                    <div class="poster-wrapper">
+                        <img src="${anime.poster}" alt="${anime.isim}" loading="lazy">
+                        <div class="ep-badge">${anime.bolumSayisi} BÖLÜM</div>
+                    </div>
+                    <div class="card-info">
+                        <div class="anime-title">${anime.isim}</div>
+                    </div>
+                </a>`;
+                listeDiv.innerHTML += html;
+            });
+
+            // Sayfa açıldığında arama varsa filtrele
+            if(aranan) aramaYap();
+
+        } else {
+            listeDiv.innerHTML = "<h3 style='color:white'>Veri dosyası bulunamadı!</h3>";
+        }
+
         function aramaYap() {
             const input = document.getElementById('aramaInput').value.toLowerCase();
             const cards = document.getElementsByClassName('anime-card');
