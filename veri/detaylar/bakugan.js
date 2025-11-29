@@ -1,6 +1,6 @@
 const ANIME_DETAY = {
   "isim": "Bakugan",
-  "ozet": "Dan ve arkadaşlarının efsanevi maceraları başlıyor.",
+  "ozet": "Dan ve arkadaşlarının efsanevi maceraları başlıyor. Takao ve arkadaşlarının efsanevi maceraları başlıyor. Kutsal canavarların gücüyle turnuvanın şampiyonu olabilecekler mi?",
   "bolumler": [
     {
       "no": 1,
