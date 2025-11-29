@@ -14,9 +14,12 @@
         <a href="index.html" class="logo">
             <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
         </a>
+        
         <div class="search-box">
-            <input type="text" id="aramaInput" placeholder="Anime ara..." onkeyup="aramaYap()">
-            <i class="fa fa-search"></i>
+            <form onsubmit="event.preventDefault(); aramaYap();" class="search-form">
+                <input type="text" id="aramaInput" placeholder="Anime ara..." required>
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+            </form>
         </div>
     </header>
 
@@ -26,7 +29,7 @@
             <img src="" class="hero-poster" id="hero-poster">
             <div class="hero-info">
                 <div class="hero-meta">
-                    <span><i class="fa fa-circle-play"></i> TV Serisi</span>
+                    <span><i class="fa fa-circle-play"></i> TV</span>
                     <span><i class="fa fa-calendar"></i> Güncel</span>
                     <span style="background: var(--primary); color:black; padding:0 5px; border-radius:3px; font-weight:bold;">HD</span>
                 </div>
@@ -48,13 +51,16 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2024 AnimeDexTR - Ücretsiz Anime İzleme Platformu</p>
-            <p>Bu sitedeki hiçbir video sunucularımızda barınmamaktadır.</p>
+            <p>&copy; <span id="yil"></span> AnimeDexTR - Kâr amacı gütmeyen bir projedir.</p>
+            <p>İletişim: contact@animedex.tr</p>
         </div>
     </footer>
 
     <script src="veri/seriler.js"></script>
     <script>
+        // Footer Yılı
+        document.getElementById('yil').innerText = new Date().getFullYear();
+
         const listeDiv = document.getElementById('anime-listesi');
 
         window.addEventListener('load', () => {
@@ -70,7 +76,7 @@
                             <div class="hover-play"><i class="fa fa-play-circle"></i></div>
                         </div>
                         <div class="card-info">
-                            <div class="anime-title">${anime.isim}</div>
+                            <span class="anime-title">${anime.isim}</span>
                             <div class="anime-meta">
                                 <span>TV</span>
                                 <span>Anime</span>
@@ -80,7 +86,7 @@
                     listeDiv.innerHTML += html;
                 });
 
-                // SPOTLIGHT MANTIĞI
+                // SPOTLIGHT
                 const urlParams = new URLSearchParams(window.location.search);
                 if (!urlParams.get('q') && TUM_SERILER.length > 0) {
                     const randomAnime = TUM_SERILER[Math.floor(Math.random() * TUM_SERILER.length)];
@@ -107,6 +113,7 @@
             }
         });
 
+        // DÜZELTİLMİŞ ARAMA
         function aramaYap() {
             const input = document.getElementById('aramaInput').value.toLowerCase();
             const cards = document.getElementsByClassName('anime-card');
