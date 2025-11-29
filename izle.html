@@ -14,10 +14,12 @@
         <a href="index.html" class="logo">
             <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
         </a>
-        <form onsubmit="event.preventDefault(); aramaYonlendir();" class="search-container">
-            <input type="text" id="aramaInput" placeholder="Anime ara..." required>
-            <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="search-box">
+            <form onsubmit="event.preventDefault(); aramaYonlendir();">
+                <input type="text" id="aramaInput" placeholder="Anime ara..." required>
+                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
     </header>
 
     <div class="watch-container">
@@ -99,6 +101,7 @@
             });
         }
 
+        // Aramayı Ana Sayfaya Yönlendir
         function aramaYonlendir() {
             const terim = document.getElementById('aramaInput').value;
             if(terim) {
@@ -106,15 +109,18 @@
             }
         }
 
-        // Giscus Yorumları
+        // Giscus Yorum Sistemi
         document.addEventListener("DOMContentLoaded", function () {
             const giscusContainer = document.getElementById("giscus-container");
             const script = document.createElement("script");
             script.src = "https://giscus.app/client.js";
+            
+            // Kendi repo bilgilerini buraya tekrar kontrol ederek yaz
             script.setAttribute("data-repo", "kerimdemirkaynak/kerimdemirkaynak.github.io");
             script.setAttribute("data-repo-id", "R_kgDOKg6g7g");
             script.setAttribute("data-category", "General");
             script.setAttribute("data-category-id", "DIC_kwDOKg6g7s4Cc0aj");
+            
             script.setAttribute("data-mapping", "pathname");
             script.setAttribute("data-strict", "0");
             script.setAttribute("data-reactions-enabled", "1");
