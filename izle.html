@@ -6,83 +6,20 @@
     <title>İzle - AnimeDexTR</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* İzleme Sayfasına Özel Eklemeler */
-        .watch-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 20px auto;
-            gap: 20px;
-            padding: 0 20px;
-        }
-        .main-content { flex: 3; }
-        .sidebar { flex: 1; min-width: 300px; }
-
-        .player-box {
-            position: relative;
-            padding-bottom: 56.25%;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .player-box iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
-        }
-
-        .anime-info-box {
-            background: #2a2c31;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-        .anime-info-box h1 { color: var(--primary); margin-bottom: 10px; }
-        .anime-info-box p { color: #ccc; font-size: 14px; line-height: 1.6; }
-
-        .ep-list-header {
-            background: #2a2c31;
-            padding: 15px;
-            border-radius: 12px 12px 0 0;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        .ep-list-body {
-            background: #23252b;
-            padding: 10px;
-            height: 500px;
-            overflow-y: auto;
-            border-radius: 0 0 12px 12px;
-        }
-        .ep-btn {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 5px;
-            background: #151618;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 13px;
-            color: #ddd;
-        }
-        .ep-btn:hover, .ep-btn.active {
-            background: var(--primary);
-            color: #000;
-            font-weight: 600;
-        }
-        .ep-btn i { margin-right: 10px; }
-
-        @media (max-width: 900px) {
-            .watch-container { flex-direction: column; }
-            .sidebar { width: 100%; }
-            .ep-list-body { max-height: 300px; }
-        }
-    </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">ANIME<span>DEX</span>TR</a>
+        <a href="index.html" class="logo">
+            <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
+        </a>
+        <div class="search-box">
+            <form onsubmit="event.preventDefault(); aramaYonlendir();">
+                <input type="text" id="aramaInput" placeholder="Anime ara..." required>
+                <button type="submit" style="display:none;"></button>
+                <i class="fa fa-search"></i>
+            </form>
+        </div>
     </header>
 
     <div class="watch-container">
@@ -97,6 +34,11 @@
                 <h1 id="baslik">Yükleniyor...</h1>
                 <p id="ozet">...</p>
             </div>
+
+            <section class="comments-section" id="comments-card">
+                <h2 data-lang-key="commentsTitle"><i class="fa fa-comments"></i> Yorumlar</h2>
+                <div id="giscus-container"></div>
+            </section>
         </div>
 
         <div class="sidebar">
@@ -104,6 +46,25 @@
             <div class="ep-list-body" id="bolum-listesi"></div>
         </div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <a href="index.html" class="logo">
+                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
+                </a>
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-reddit-alien"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 AnimeDexTR. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -141,17 +102,46 @@
                     oynatici.innerHTML = `<iframe src="${bolum.link}" allowfullscreen></iframe>`;
                     document.getElementById('baslik').innerText = `${anime.isim} - ${bolum.no}. Bölüm`;
                     
-                    // Aktif butonu boya
                     document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                 };
 
                 listeDiv.appendChild(btn);
 
-                // İlk bölümü aç
                 if(index === 0) btn.click();
             });
         }
+
+        // Arama Yönlendirme
+        function aramaYonlendir() {
+            const terim = document.getElementById('aramaInput').value;
+            if(terim) {
+                window.location.href = `index.html?q=${encodeURIComponent(terim)}`;
+            }
+        }
+
+        // Giscus Yorum Sistemi
+        document.addEventListener("DOMContentLoaded", function () {
+            const giscusContainer = document.getElementById("giscus-container");
+
+            const script = document.createElement("script");
+            script.src = "https://giscus.app/client.js";
+            script.setAttribute("data-repo", "kerimdemirkaynak/kerimdemirkaynak.github.io");
+            script.setAttribute("data-repo-id", "R_kgDOKg6g7g");
+            script.setAttribute("data-category", "General");
+            script.setAttribute("data-category-id", "DIC_kwDOKg6g7s4Cc0aj");
+            script.setAttribute("data-mapping", "pathname");
+            script.setAttribute("data-strict", "0");
+            script.setAttribute("data-reactions-enabled", "1");
+            script.setAttribute("data-emit-metadata", "0");
+            script.setAttribute("data-input-position", "bottom");
+            script.setAttribute("data-theme", "dark");
+            script.setAttribute("data-lang", "tr");
+            script.setAttribute("crossorigin", "anonymous");
+            script.async = true;
+
+            giscusContainer.appendChild(script);
+        });
     </script>
 </body>
 </html>
