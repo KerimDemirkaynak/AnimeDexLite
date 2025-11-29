@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İzle - AnimeDexTR</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -36,7 +37,7 @@
             </div>
 
             <section class="comments-section" id="comments-card">
-                <h2 data-lang-key="commentsTitle"><i class="fa fa-comments"></i> Yorumlar</h2>
+                <h2><i class="fa fa-comments"></i> Yorumlar</h2>
                 <div id="giscus-container"></div>
             </section>
         </div>
@@ -49,20 +50,7 @@
 
     <footer>
         <div class="footer-content">
-            <div class="footer-top">
-                <a href="index.html" class="logo">
-                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
-                </a>
-                <div class="social-links">
-                    <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
-                    <a href="#" class="social-btn"><i class="fab fa-telegram"></i></a>
-                    <a href="#" class="social-btn"><i class="fab fa-reddit-alien"></i></a>
-                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2024 AnimeDexTR. Tüm hakları saklıdır.</p>
-            </div>
+            <p>&copy; 2024 AnimeDexTR - Ücretsiz Anime İzleme Platformu</p>
         </div>
     </footer>
 
@@ -112,7 +100,6 @@
             });
         }
 
-        // Arama Yönlendirme
         function aramaYonlendir() {
             const terim = document.getElementById('aramaInput').value;
             if(terim) {
@@ -120,10 +107,9 @@
             }
         }
 
-        // Giscus Yorum Sistemi
+        // Giscus Yorumları
         document.addEventListener("DOMContentLoaded", function () {
             const giscusContainer = document.getElementById("giscus-container");
-
             const script = document.createElement("script");
             script.src = "https://giscus.app/client.js";
             script.setAttribute("data-repo", "kerimdemirkaynak/kerimdemirkaynak.github.io");
@@ -139,7 +125,6 @@
             script.setAttribute("data-lang", "tr");
             script.setAttribute("crossorigin", "anonymous");
             script.async = true;
-
             giscusContainer.appendChild(script);
         });
     </script>
