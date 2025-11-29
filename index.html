@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnimeDexTR</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -30,9 +31,7 @@
                     <span style="background: var(--primary); color:black; padding:0 5px; border-radius:3px; font-weight:bold;">HD</span>
                 </div>
                 <h2 id="hero-title">Yükleniyor...</h2>
-                <p style="color:#ddd; margin-bottom:20px; line-height:1.5; max-width:600px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;" id="hero-desc">
-                    Özet bilgisi yükleniyor...
-                </p>
+                <p id="hero-desc" style="color:#ddd; margin-bottom:20px; line-height:1.5; max-width:600px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">...</p>
                 <a href="#" class="btn-watch" id="hero-btn"><i class="fa fa-play"></i> Hemen İzle</a>
             </div>
         </div>
@@ -42,7 +41,6 @@
         <div class="section-header">
             <h2>Tüm Seriler</h2>
         </div>
-        
         <div id="anime-listesi">
             <div style="color: #666; text-align: center; width: 100%;">Liste Yükleniyor...</div>
         </div>
@@ -50,50 +48,12 @@
 
     <footer>
         <div class="footer-content">
-            <div class="footer-top">
-                <a href="index.html" class="logo">
-                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
-                </a>
-                <div class="social-links">
-                    <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
-                    <a href="#" class="social-btn"><i class="fab fa-telegram"></i></a>
-                    <a href="#" class="social-btn"><i class="fab fa-reddit-alien"></i></a>
-                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-az">
-                <h3>A-Z LİSTE</h3>
-                <ul class="az-list">
-                    <li><a href="#">HEPSİ</a></li><li><a href="#">#</a></li><li><a href="#">0-9</a></li>
-                    <li><a href="#">A</a></li><li><a href="#">B</a></li><li><a href="#">C</a></li>
-                    <li><a href="#">D</a></li><li><a href="#">E</a></li><li><a href="#">F</a></li>
-                    <li><a href="#">G</a></li><li><a href="#">H</a></li><li><a href="#">I</a></li>
-                    <li><a href="#">J</a></li><li><a href="#">K</a></li><li><a href="#">L</a></li>
-                    <li><a href="#">M</a></li><li><a href="#">N</a></li><li><a href="#">O</a></li>
-                    <li><a href="#">P</a></li><li><a href="#">R</a></li><li><a href="#">S</a></li>
-                    <li><a href="#">T</a></li><li><a href="#">U</a></li><li><a href="#">V</a></li>
-                    <li><a href="#">Y</a></li><li><a href="#">Z</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-links">
-                <ul>
-                    <li><a href="#">Kullanım Şartları</a></li>
-                    <li><a href="#">DMCA</a></li>
-                    <li><a href="#">İletişim</a></li>
-                </ul>
-            </div>
-
-            <div class="copyright">
-                <p>AnimeDexTR sitesinde sunucumuzda herhangi bir dosya barındırılmamaktadır. Tüm içerikler 3. parti sağlayıcılar tarafından sunulmaktadır.</p>
-                <p>&copy; 2024 AnimeDexTR. Tüm hakları saklıdır.</p>
-            </div>
+            <p>&copy; 2024 AnimeDexTR - Ücretsiz Anime İzleme Platformu</p>
+            <p>Bu sitedeki hiçbir video sunucularımızda barınmamaktadır.</p>
         </div>
     </footer>
 
     <script src="veri/seriler.js"></script>
-
     <script>
         const listeDiv = document.getElementById('anime-listesi');
 
@@ -101,7 +61,6 @@
             if (typeof TUM_SERILER !== 'undefined') {
                 listeDiv.innerHTML = "";
                 
-                // 1. LİSTEYİ DOLDUR
                 TUM_SERILER.forEach(anime => {
                     const html = `
                     <a href="izle.html?id=${anime.id}" class="anime-card">
@@ -121,47 +80,32 @@
                     listeDiv.innerHTML += html;
                 });
 
-                // 2. ARAMA KONTROLÜ
+                // SPOTLIGHT MANTIĞI
                 const urlParams = new URLSearchParams(window.location.search);
-                const arananKelime = urlParams.get('q');
-                if (arananKelime) {
-                    document.getElementById('aramaInput').value = arananKelime;
-                    aramaYap();
-                    document.getElementById('spotlight-area').style.display = 'none';
-                } else {
-                    spotlightYukle();
-                }
+                if (!urlParams.get('q') && TUM_SERILER.length > 0) {
+                    const randomAnime = TUM_SERILER[Math.floor(Math.random() * TUM_SERILER.length)];
+                    
+                    document.getElementById('spotlight-area').style.display = 'flex';
+                    document.getElementById('hero-bg').style.backgroundImage = `url('${randomAnime.poster}')`;
+                    document.getElementById('hero-poster').src = randomAnime.poster;
+                    document.getElementById('hero-title').innerText = randomAnime.isim;
+                    document.getElementById('hero-btn').href = `izle.html?id=${randomAnime.id}`;
 
-            } else {
-                listeDiv.innerHTML = "<h3 style='color:white'>Liste Yüklenemedi!</h3>";
+                    const script = document.createElement('script');
+                    script.src = `veri/detaylar/${randomAnime.id}.js`;
+                    script.onload = function() {
+                        if (typeof ANIME_DETAY !== 'undefined') {
+                            document.getElementById('hero-desc').innerText = ANIME_DETAY.ozet || "Özet bulunamadı.";
+                            window.ANIME_DETAY = undefined; 
+                        }
+                    };
+                    document.body.appendChild(script);
+                } else if (urlParams.get('q')) {
+                    document.getElementById('aramaInput').value = urlParams.get('q');
+                    aramaYap();
+                }
             }
         });
-
-        // 3. SPOTLIGHT (Özeti Dosyadan Çekme)
-        function spotlightYukle() {
-            if(TUM_SERILER.length > 0) {
-                const randomAnime = TUM_SERILER[Math.floor(Math.random() * TUM_SERILER.length)];
-                
-                document.getElementById('spotlight-area').style.display = 'flex';
-                document.getElementById('hero-bg').style.backgroundImage = `url('${randomAnime.poster}')`;
-                document.getElementById('hero-poster').src = randomAnime.poster;
-                document.getElementById('hero-title').innerText = randomAnime.isim;
-                document.getElementById('hero-btn').href = `izle.html?id=${randomAnime.id}`;
-
-                // ÖZETİ ÇEKMEK İÇİN YENİ YÖNTEM (Hata almamak için)
-                const script = document.createElement('script');
-                script.src = `veri/detaylar/${randomAnime.id}.js`;
-                script.onload = function() {
-                    // Detay dosyası yüklendiğinde ANIME_DETAY değişkeni güncellenir
-                    if (typeof ANIME_DETAY !== 'undefined') {
-                        document.getElementById('hero-desc').innerText = ANIME_DETAY.ozet || "Özet bulunamadı.";
-                        // Çakışmayı önlemek için temizle
-                        window.ANIME_DETAY = undefined; 
-                    }
-                };
-                document.body.appendChild(script);
-            }
-        }
 
         function aramaYap() {
             const input = document.getElementById('aramaInput').value.toLowerCase();
