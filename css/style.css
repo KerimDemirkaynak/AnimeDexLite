@@ -1,15 +1,15 @@
-/* MODERN ANIME TEMASI - STYLE.CSS (V5 - FINAL) */
+/* MODERN ANIME TEMASI - STYLE.CSS (V6 - FIX) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --bg-body: #14151a;       /* Daha koyu, göz yormayan siyah */
-    --bg-header: rgba(20, 21, 26, 0.95);
+    --bg-body: #14151a;
+    --bg-header: rgba(20, 21, 26, 0.98);
     --bg-card: #1f2125;
-    --primary: #ffbade;       /* HiAnime Pembe */
+    --primary: #ffbade;
     --primary-hover: #ff9ecd;
     --text-white: #ffffff;
     --text-gray: #aaaaaa;
-    --card-radius: 8px;
+    --card-radius: 6px; /* Kart köşeleri biraz daha keskinleşti */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -26,7 +26,7 @@ body {
 
 a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-/* --- HEADER (ÜST MENÜ) --- */
+/* --- HEADER --- */
 header {
     background-color: var(--bg-header);
     backdrop-filter: blur(10px);
@@ -38,31 +38,28 @@ header {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    height: 60px; /* Sabit yükseklik */
+    height: 60px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
+.logo { display: flex; align-items: center; height: 100%; }
+.logo img { height: 35px; width: auto; object-fit: contain; }
 
-.logo img {
-    height: 35px; /* Logo boyutu sabitlendi */
-    width: auto;
-    object-fit: contain;
-}
-
-/* Arama Kutusu */
+/* Düzeltilmiş Arama Kutusu */
 .search-box {
     position: relative;
     width: 300px;
+}
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
 }
 .search-box input {
     width: 100%;
     background: #000;
     border: 1px solid #333;
-    padding: 8px 20px 8px 40px;
+    padding: 8px 40px 8px 15px; /* Buton için sağdan boşluk */
     border-radius: 20px;
     color: white;
     font-family: 'Poppins', sans-serif;
@@ -70,14 +67,27 @@ header {
     transition: all 0.3s;
 }
 .search-box input:focus { border-color: var(--primary); }
-.search-box i {
-    position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 14px;
-}
 
-/* --- SPOTLIGHT (ÖNE ÇIKAN) --- */
+/* Tıklanabilir Arama Butonu */
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.search-btn:hover { color: var(--primary); }
+
+/* --- SPOTLIGHT --- */
 .hero-wrapper {
-    position: relative; width: 100%; height: 400px;
-    overflow: hidden; display: flex; align-items: center; margin-bottom: 30px;
+    position: relative; width: 100%; height: 380px; /* Yükseklik azaltıldı */
+    overflow: hidden; display: flex; align-items: center; margin-bottom: 20px;
 }
 .hero-bg {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -89,55 +99,69 @@ header {
     margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 30px;
 }
 .hero-poster {
-    width: 200px; height: 300px; border-radius: 10px;
+    width: 180px; height: 270px; border-radius: 8px; /* Poster küçültüldü */
     box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: cover;
 }
 .hero-info h2 {
-    font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 10px;
+    font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 10px;
     text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
 .hero-meta {
-    display: flex; gap: 15px; margin-bottom: 15px; font-size: 13px; color: #ddd;
+    display: flex; gap: 15px; margin-bottom: 15px; font-size: 12px; color: #ddd;
 }
 .btn-watch {
-    background: var(--primary); color: #000; padding: 10px 25px; border-radius: 25px;
-    font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+    background: var(--primary); color: #000; padding: 8px 25px; border-radius: 20px;
+    font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 13px;
 }
 .btn-watch:hover { transform: scale(1.05); background: var(--primary-hover); }
 
-/* --- KARTLAR VE LİSTE --- */
+/* --- LİSTE ALANI (DÜZELTİLDİ: DAHA KÜÇÜK KARTLAR) --- */
 .container {
     max-width: 1400px; margin: 0 auto; padding: 0 20px 40px 20px; width: 100%;
 }
 .section-header {
     margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px;
 }
-.section-header h2 { font-size: 20px; font-weight: 600; color: var(--primary); }
+.section-header h2 { font-size: 18px; font-weight: 600; color: var(--text-white); }
 
 #anime-listesi {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px;
+    display: grid;
+    /* Kart genişliği 140px'e düşürüldü, daha fazla kart sığacak */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+    gap: 15px;
 }
+
 .anime-card {
     position: relative; border-radius: var(--card-radius); overflow: hidden;
-    background: var(--bg-card); transition: transform 0.2s;
+    background: transparent; /* Kart arkaplanı kaldırıldı */
+    transition: transform 0.2s;
 }
-.anime-card:hover { transform: translateY(-5px); }
-.poster-box { position: relative; width: 100%; aspect-ratio: 2/3; overflow: hidden; }
-.poster-box img { width: 100%; height: 100%; object-fit: cover; }
+.anime-card:hover { transform: translateY(-3px); }
+
+.poster-box {
+    position: relative; width: 100%; aspect-ratio: 2/3; 
+    overflow: hidden; border-radius: var(--card-radius);
+}
+.poster-box img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;
+}
+.anime-card:hover .poster-box img { transform: scale(1.05); }
+
 .hover-play {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); display: flex; justify-content: center;
+    background: rgba(0,0,0,0.4); display: flex; justify-content: center;
     align-items: center; opacity: 0; transition: 0.2s;
 }
 .anime-card:hover .hover-play { opacity: 1; }
-.hover-play i { font-size: 40px; color: var(--primary); }
-.card-info { padding: 10px; }
+.hover-play i { font-size: 35px; color: var(--primary); }
+
+.card-info { padding: 8px 0; } /* Padding azaltıldı */
 .anime-title {
     font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden;
-    text-overflow: ellipsis; color: white; display: block;
+    text-overflow: ellipsis; color: #ddd; display: block;
 }
 .anime-meta {
-    font-size: 11px; color: var(--text-gray); margin-top: 4px;
+    font-size: 11px; color: var(--text-gray); margin-top: 2px;
     display: flex; justify-content: space-between;
 }
 .ep-tag {
@@ -145,19 +169,13 @@ header {
     color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px;
 }
 
-/* --- İZLEME SAYFASI DÜZENİ --- */
+/* --- İZLEME SAYFASI --- */
 .watch-container {
     display: flex; gap: 20px; max-width: 1400px; margin: 20px auto; padding: 0 20px;
-    align-items: flex-start; /* Hizalamayı düzeltir */
+    align-items: flex-start;
 }
-.main-content {
-    flex: 1; /* Esnek genişlik */
-    min-width: 0; /* Taşmayı önler */
-}
-.sidebar {
-    width: 350px; /* Sabit genişlik */
-    flex-shrink: 0;
-}
+.main-content { flex: 1; min-width: 0; }
+.sidebar { width: 320px; flex-shrink: 0; }
 
 .player-box {
     position: relative; padding-bottom: 56.25%; background: #000;
@@ -166,47 +184,42 @@ header {
 .player-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
 .anime-info-box {
-    background: var(--bg-card); padding: 20px; border-radius: 8px; margin-bottom: 20px;
+    background: var(--bg-card); padding: 15px; border-radius: 8px; margin-bottom: 20px;
 }
-.anime-info-box h1 { color: var(--primary); margin-bottom: 10px; font-size: 22px; }
-.anime-info-box p { color: #ccc; font-size: 14px; line-height: 1.6; }
+.anime-info-box h1 { color: var(--primary); margin-bottom: 8px; font-size: 20px; }
+.anime-info-box p { color: #ccc; font-size: 13px; line-height: 1.5; }
 
-/* Yorumlar */
-.comments-section {
-    background: var(--bg-card); padding: 20px; border-radius: 8px;
-}
-.comments-section h2 { font-size: 18px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+.comments-section { background: var(--bg-card); padding: 20px; border-radius: 8px; }
+.comments-section h2 { font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
 
-/* Bölüm Listesi */
 .ep-list-header {
-    background: #25262b; padding: 12px; border-radius: 8px 8px 0 0;
-    font-weight: bold; color: var(--primary); font-size: 14px;
+    background: #25262b; padding: 10px; border-radius: 8px 8px 0 0;
+    font-weight: bold; color: var(--primary); font-size: 13px;
 }
 .ep-list-body {
-    background: var(--bg-card); padding: 10px; max-height: 600px;
+    background: var(--bg-card); padding: 8px; max-height: 500px;
     overflow-y: auto; border-radius: 0 0 8px 8px;
 }
 .ep-btn {
-    display: flex; align-items: center; padding: 10px; margin-bottom: 5px;
+    display: flex; align-items: center; padding: 8px; margin-bottom: 4px;
     background: #18191d; border-radius: 4px; cursor: pointer;
-    transition: 0.2s; font-size: 13px; color: #ddd; text-decoration: none;
+    transition: 0.2s; font-size: 12px; color: #ccc; text-decoration: none;
 }
 .ep-btn:hover, .ep-btn.active { background: var(--primary); color: #000; font-weight: 600; }
-.ep-btn i { margin-right: 10px; font-size: 10px; }
+.ep-btn i { margin-right: 8px; font-size: 10px; }
 
-/* Footer */
+/* FOOTER DÜZENLEMESİ */
 footer {
-    background: #111; padding: 20px; margin-top: auto; border-top: 1px solid #222; text-align: center;
+    background: #111; padding: 15px 20px; margin-top: auto; border-top: 1px solid #222; text-align: center;
 }
-.footer-content p { color: #555; font-size: 12px; }
+.footer-content p { color: #666; font-size: 11px; margin: 2px 0; }
 
-/* Mobil Uyum */
 @media (max-width: 900px) {
     .watch-container { flex-direction: column; }
     .sidebar { width: 100%; }
-    .hero-wrapper { height: 350px; }
+    .hero-wrapper { height: 300px; }
     .hero-poster { display: none; }
     .search-box { width: 40px; }
     .search-box input { padding: 0; width: 0; border: none; background: transparent; }
-    .search-box i { left: auto; right: 0; color: white; font-size: 18px; }
+    .search-btn { position: static; color: white; font-size: 18px; padding: 0; }
 }
