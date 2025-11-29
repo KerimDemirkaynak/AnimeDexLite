@@ -1,4 +1,4 @@
-/* ANIME TEMASI - FINAL (V12.1 - MOBİL ARAMA REVIZE) */
+/* ANIME TEMASI - FINAL (V12.2 - SCROLLBAR FIX) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -207,11 +207,35 @@ header {
     background: var(--bg-card); padding: 10px; max-height: 600px;
     overflow-y: auto; border-radius: 0 0 12px 12px;
 }
+
+/* --- ÖZEL SCROLLBAR TASARIMI (PC Fix) --- */
+.ep-list-body::-webkit-scrollbar {
+    width: 8px; /* Çubuğu inceltir (Standart 17px yerine 8px) */
+}
+.ep-list-body::-webkit-scrollbar-track {
+    background: #18191d; 
+    border-radius: 0 0 12px 0;
+}
+.ep-list-body::-webkit-scrollbar-thumb {
+    background-color: var(--primary); /* Pembe renk */
+    border-radius: 4px;
+    border: 2px solid #18191d; /* Etrafında boşluk hissi */
+}
+.ep-list-body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-hover);
+}
+
 .ep-btn {
     display: flex; align-items: center; padding: 12px 15px; margin-bottom: 6px;
     background: #18191d; border-radius: 6px; cursor: pointer;
     transition: 0.2s; font-size: 13px; color: #ccc; text-decoration: none;
     border-left: 3px solid transparent;
+    
+    /* Uzun bölüm isimleri için koruma */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 5px;
 }
 .ep-btn:hover, .ep-btn.active { 
     background: #2f3136; color: white; font-weight: 500; 
