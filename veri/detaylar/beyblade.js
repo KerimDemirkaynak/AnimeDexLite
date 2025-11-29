@@ -5,7 +5,7 @@ const ANIME_DETAY = {
     {
       "no": 1,
       "baslik": "Beyblade Savaşçısı Takao",
-      "link": "https://www.youtube.com/embed/VIDEO_ID_1"
+      "link": "https://www.youtube.com/watch?v=N77YpPDSsyI"
     },
     {
       "no": 2,
