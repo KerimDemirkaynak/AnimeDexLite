@@ -31,15 +31,16 @@
             </div>
 
             <div class="source-selector" id="source-selector" style="display:none;">
-                <div class="source-title"><i class="fa fa-server"></i> SUNUCU SEÇİNİZ:</div>
+                <div class="source-title"><i class="fa fa-server"></i> KAYNAK: <span id="active-source-name" style="color:white; font-weight:normal;">-</span></div>
                 <div id="sources-list"></div>
             </div>
             
             <div class="anime-info-box">
                 <h1 id="baslik">Yükleniyor...</h1>
-                <div class="anime-meta" style="justify-content: flex-start; gap: 20px; margin-bottom: 15px; color: #aaa;">
+                <div class="anime-meta" style="justify-content: flex-start; gap: 20px; margin-bottom: 20px; color: #aaa; font-size:14px;">
                     <span id="meta-yil"><i class="fa fa-calendar"></i> -</span>
                     <span id="meta-tur"><i class="fa fa-tags"></i> -</span>
+                    <span id="meta-sure"><i class="fa fa-clock"></i> -</span>
                 </div>
                 <p id="ozet">...</p>
             </div>
@@ -71,8 +72,8 @@
             </div>
         </div>
         <div class="legal-warning">
-            <p>Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
-            <p>&copy; <span id="yil"></span> AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
+            <p class="legal-text">Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
+            <p class="copyright-text">© <span id="yil"></span> AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
         </div>
     </footer>
 
@@ -96,24 +97,23 @@
             document.body.appendChild(script);
         }
 
-        let currentEpisodeSources = [];
-
         function yukle(anime) {
             document.getElementById('baslik').innerText = anime.isim;
             document.getElementById('ozet').innerText = anime.ozet;
             document.title = anime.isim + " - İzle";
             
-            // Meta Bilgileri
-            document.getElementById('meta-yil').innerHTML = `<i class="fa fa-calendar"></i> ${anime.yil || 'Bilinmiyor'}`;
-            document.getElementById('meta-tur').innerHTML = `<i class="fa fa-tags"></i> ${anime.tur || 'Genel'}`;
+            // Meta verileri doldur
+            document.getElementById('meta-yil').innerHTML = `<i class="fa fa-calendar"></i> ${anime.yil || '?'}`;
+            document.getElementById('meta-tur').innerHTML = `<i class="fa fa-tags"></i> ${anime.tur || '?'}`;
+            // Süre bilgisini seriler.js'den çekmek için TUM_SERILER'e bakmamız gerekebilir veya detay dosyasına eklemeniz gerekir.
+            // Şimdilik boş bırakıyoruz veya detay dosyasına eklerseniz buraya anime.sure yazabilirsiniz.
 
             const listeDiv = document.getElementById('bolum-listesi');
             
-            // Bölümleri Listele
             anime.bolumler.forEach((bolum, index) => {
                 const btn = document.createElement('div');
                 btn.className = 'ep-btn';
-                btn.innerHTML = `<i class="fa fa-play"></i> Bölüm ${bolum.no}: ${bolum.baslik || ''}`;
+                btn.innerHTML = `<i class="fa fa-play"></i> Bölüm ${bolum.no}: ${bolum.baslik}`;
                 
                 btn.onclick = () => {
                     document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
@@ -121,53 +121,55 @@
                     
                     document.getElementById('baslik').innerText = `${anime.isim} - ${bolum.no}. Bölüm`;
                     
-                    // Çoklu Kaynak Kontrolü
-                    if(bolum.kaynaklar && Array.isArray(bolum.kaynaklar)) {
-                        currentEpisodeSources = bolum.kaynaklar;
+                    // Kaynakları İşle
+                    let kaynaklar = [];
+                    if(bolum.kaynaklar) {
+                        kaynaklar = bolum.kaynaklar;
                     } else if (bolum.link) {
-                        // Eski veriyi destekle
-                        currentEpisodeSources = [{isim: 'Varsayılan', link: bolum.link}];
+                        kaynaklar = [{isim: 'Varsayılan', link: bolum.link}];
                     }
-
-                    renderSources(currentEpisodeSources);
+                    
+                    renderSources(kaynaklar);
                 };
 
                 listeDiv.appendChild(btn);
-                
-                // İlk bölümü otomatik aç
                 if(index === 0) btn.click();
             });
         }
 
         function renderSources(sources) {
-            const sourceList = document.getElementById('sources-list');
-            const selectorDiv = document.getElementById('source-selector');
+            const listDiv = document.getElementById('sources-list');
+            const selector = document.getElementById('source-selector');
             const player = document.getElementById('oynatici');
+            const activeName = document.getElementById('active-source-name');
 
-            sourceList.innerHTML = "";
+            listDiv.innerHTML = "";
             
             if(sources.length > 0) {
-                selectorDiv.style.display = 'block';
-                
+                selector.style.display = 'block';
                 sources.forEach((src, idx) => {
                     const btn = document.createElement('button');
                     btn.className = 'source-btn';
-                    btn.innerText = src.isim.toUpperCase();
-                    if(idx === 0) btn.classList.add('active'); // İlk kaynak aktif
+                    btn.innerText = src.isim;
+                    
+                    if(idx === 0) {
+                        btn.classList.add('active');
+                        activeName.innerText = src.isim;
+                        player.innerHTML = `<iframe src="${src.link}" allowfullscreen scrolling="no" frameborder="0"></iframe>`;
+                    }
 
                     btn.onclick = () => {
                         document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));
                         btn.classList.add('active');
+                        activeName.innerText = src.isim;
                         player.innerHTML = `<iframe src="${src.link}" allowfullscreen scrolling="no" frameborder="0"></iframe>`;
                     };
-                    sourceList.appendChild(btn);
+                    
+                    listDiv.appendChild(btn);
                 });
-
-                // İlk kaynağı oynat
-                player.innerHTML = `<iframe src="${sources[0].link}" allowfullscreen scrolling="no" frameborder="0"></iframe>`;
             } else {
-                selectorDiv.style.display = 'none';
-                player.innerHTML = "<h3 style='color:white;text-align:center;padding-top:20%;'>Kaynak Bulunamadı</h3>";
+                selector.style.display = 'none';
+                player.innerHTML = '<div style="color:white;text-align:center;padding-top:25%;">Kaynak Bulunamadı</div>';
             }
         }
 
@@ -177,8 +179,32 @@
                 window.location.href = `index.html?q=${encodeURIComponent(terim)}`;
             }
         }
-        
-        // Giscus Yorum (Aynı kalabilir)
+
+        // Giscus Yorum Sistemi
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentAnimeId = new URLSearchParams(window.location.search).get('id');
+            if (!currentAnimeId) return;
+
+            const giscusContainer = document.getElementById("giscus-container");
+            const script = document.createElement("script");
+            script.src = "https://giscus.app/client.js";
+            
+            script.setAttribute("data-repo", "KerimDemirkaynak/Yorumlar");
+            script.setAttribute("data-repo-id", "R_kgDOPPm0QA");
+            script.setAttribute("data-category", "Yorumlar");
+            script.setAttribute("data-category-id", "DIC_kwDOPPm0QM4CtM73");
+            script.setAttribute("data-mapping", "specific");
+            script.setAttribute("data-term", currentAnimeId); 
+            script.setAttribute("data-strict", "0");
+            script.setAttribute("data-reactions-enabled", "1");
+            script.setAttribute("data-emit-metadata", "0");
+            script.setAttribute("data-input-position", "bottom");
+            script.setAttribute("data-theme", "dark");
+            script.setAttribute("data-lang", "tr");
+            script.setAttribute("crossorigin", "anonymous");
+            script.async = true;
+            giscusContainer.appendChild(script);
+        });
     </script>
 </body>
 </html>
