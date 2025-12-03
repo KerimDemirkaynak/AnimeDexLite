@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnimeDexTR - Anime İzle</title>
     <meta name="description" content="AnimeDexTR ile en sevdiğiniz animeleri HD kalitede, Türkçe altyazılı ve reklamsız izleyin.">
-    
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://animedextr.com/">
     <meta property="og:title" content="AnimeDexTR - Anime İzle">
@@ -80,7 +80,7 @@
                 <a href="index.html" class="logo">
                     <img src="https://raw.githubusercontent.com/KerimDemirkaynak/AnimeDexTR/refs/heads/main/static/header.png" alt="AnimeDexTR" style="height:35px; margin-bottom:15px;">
                 </a>
-                <p>AnimeDexTR, anime severler için oluşturulmuş, yüksek kalitede ve ücretsiz bir izleme platformudur. Reklamsız deneyimin tadını çıkarın.</p>
+                <p>AnimeDexTR, anime severler için oluşturulmuş, yüksek kalitede ve ücretsiz bir izleme platformudur.</p>
             </div>
             <div class="footer-col">
                 <h3>Hızlı Erişim</h3>
@@ -95,23 +95,23 @@
                 <ul>
                     <li><a href="hakkinda.html#dmca">Telif Hakkı (DMCA)</a></li>
                     <li><a href="hakkinda.html#tos">Kullanım Şartları</a></li>
-                    <li><a href="404.html">Hata Bildir</a></li>
                 </ul>
             </div>
         </div>
         <div class="legal-warning">
-            <p class="legal-text">Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
             <p class="copyright-text">© 2025 AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
         </div>
     </footer>
 
     <script src="veri/seriler.js"></script>
+    
     <script>
         let currentSlideIndex = 0;
         let slideInterval;
         let visibleCount = 12; 
         const loadAmount = 6;
         let filteredSeries = []; 
+        let isAnimating = false; // Tıklama spamını engellemek için
 
         window.addEventListener('load', () => {
             if (typeof TUM_SERILER !== 'undefined') {
@@ -127,6 +127,79 @@
                 }
             }
         });
+
+        // --- GÜNCELLENEN SLIDER FONKSİYONLARI ---
+
+        function spotlightBaslat() {
+            if(TUM_SERILER.length > 0) {
+                // İlk açılışta direkt yükle
+                updateSpotlight(0);
+                // Hafif zoom efekti için manuel tetik
+                document.getElementById('hero-bg').style.transform = "scale(1.05)";
+                // Otomatik döngüyü başlat
+                slideInterval = setInterval(() => changeSlide(1), 6000); 
+            }
+        }
+
+        function changeSlide(direction) {
+            // Animasyon oynuyorsa bekle
+            if (isAnimating) return;
+            isAnimating = true;
+
+            // Yeni indexi belirle
+            let nextIndex = currentSlideIndex + direction;
+            if (nextIndex >= TUM_SERILER.length) nextIndex = 0;
+            if (nextIndex < 0) nextIndex = TUM_SERILER.length - 1;
+
+            const wrapper = document.getElementById('spotlight-area');
+            
+            // 1. CSS Animasyonunu Başlat (Fade Out / Slide Down)
+            wrapper.classList.add('changing');
+
+            // 2. Yeni resmi arka planda yükle (Preload)
+            const nextAnime = TUM_SERILER[nextIndex];
+            const imgLoader = new Image();
+            imgLoader.src = nextAnime.poster;
+
+            // Resim hazır olduğunda (veya süre dolduğunda) içeriği değiştir
+            imgLoader.onload = () => {
+                // CSS transition süresi (0.5s) kadar bekle
+                setTimeout(() => {
+                    currentSlideIndex = nextIndex;
+                    updateSpotlight(currentSlideIndex);
+
+                    // Animasyonu Bitir (Fade In / Slide Up)
+                    wrapper.classList.remove('changing');
+                    
+                    // Buton kilidini kaldır
+                    setTimeout(() => { isAnimating = false; }, 500);
+                    
+                }, 500); 
+            };
+
+            // Resim hatası olursa kilitlenme olmasın
+            imgLoader.onerror = () => {
+                wrapper.classList.remove('changing');
+                isAnimating = false;
+            };
+
+            // Otomatik zamanlayıcıyı sıfırla
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => changeSlide(1), 6000);
+        }
+
+        function updateSpotlight(index) {
+            const anime = TUM_SERILER[index];
+            document.getElementById('hero-bg').style.backgroundImage = `url('${anime.poster}')`;
+            document.getElementById('hero-poster').src = anime.poster;
+            document.getElementById('hero-title').innerText = anime.isim;
+            document.getElementById('hero-btn').href = `izle.html?id=${anime.id}`;
+            document.getElementById('hero-date').innerHTML = `<i class="fa fa-calendar"></i> ${anime.yil || 'Bilinmiyor'}`;
+            document.getElementById('hero-type').innerHTML = `<i class="fa fa-circle-play"></i> ${anime.tip || 'TV'}`;
+            document.getElementById('hero-desc').innerText = anime.ozet || "Özet bilgisi bulunamadı.";
+        }
+
+        // --- DİĞER LİSTELEME FONKSİYONLARI (AYNI) ---
 
         function listeyiRenderEt() {
             const listeDiv = document.getElementById('anime-listesi');
@@ -191,38 +264,6 @@
             if(kategori) kategori.style.display = input ? 'none' : 'block';
             
             listeyiRenderEt();
-        }
-
-        function spotlightBaslat() {
-            if(TUM_SERILER.length > 0) {
-                updateSpotlight(0);
-                slideInterval = setInterval(() => changeSlide(1), 6000); 
-            }
-        }
-
-        function changeSlide(direction) {
-            const content = document.getElementById('hero-content');
-            if(content) content.classList.add('fade-out');
-            setTimeout(() => {
-                currentSlideIndex += direction;
-                if (currentSlideIndex >= TUM_SERILER.length) currentSlideIndex = 0;
-                if (currentSlideIndex < 0) currentSlideIndex = TUM_SERILER.length - 1;
-                updateSpotlight(currentSlideIndex);
-                if(content) content.classList.remove('fade-out');
-            }, 500);
-            clearInterval(slideInterval);
-            slideInterval = setInterval(() => changeSlide(1), 6000);
-        }
-
-        function updateSpotlight(index) {
-            const anime = TUM_SERILER[index];
-            document.getElementById('hero-bg').style.backgroundImage = `url('${anime.poster}')`;
-            document.getElementById('hero-poster').src = anime.poster;
-            document.getElementById('hero-title').innerText = anime.isim;
-            document.getElementById('hero-btn').href = `izle.html?id=${anime.id}`;
-            document.getElementById('hero-date').innerHTML = `<i class="fa fa-calendar"></i> ${anime.yil || 'Bilinmiyor'}`;
-            document.getElementById('hero-type').innerHTML = `<i class="fa fa-circle-play"></i> ${anime.tip || 'TV'}`;
-            document.getElementById('hero-desc').innerText = anime.ozet || "Özet bilgisi bulunamadı.";
         }
 
         function kategorileriRenderEt() {
