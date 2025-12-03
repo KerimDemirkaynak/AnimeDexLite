@@ -2,14 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --bg-body: #14151a;
-    --bg-header: rgba(20, 21, 26, 0.98);
+    --bg-body: #202125;
+    --bg-header: rgba(32, 33, 37, 0.95);
     --bg-card: #2a2c31;
     --primary: #ffbade;
     --primary-hover: #ff9ecd;
     --text-white: #ffffff;
     --text-gray: #aaaaaa;
-    --card-radius: 8px;
+    --card-radius: 12px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -26,7 +26,7 @@ body {
 }
 
 a { text-decoration: none; color: inherit; transition: 0.3s; }
-ul { list-style: none; }
+ul { list-style: none; padding: 0; margin: 0; }
 
 /* --- HEADER --- */
 header {
@@ -105,7 +105,7 @@ header {
 }
 .btn-watch:hover { transform: scale(1.05); background: var(--primary-hover); }
 
-/* Slider Navigasyon */
+/* Slider Navigasyon (HiAnime Tarzı) */
 .slider-nav-btn {
     position: absolute; bottom: 20px; right: 20px; z-index: 10;
     width: 40px; height: 40px;
@@ -135,8 +135,7 @@ header {
 
 .anime-card {
     position: relative; border-radius: var(--card-radius); overflow: hidden;
-    background: var(--bg-card); transition: transform 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background: var(--bg-card); transition: transform 0.3s; display: block;
 }
 .anime-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
 
@@ -166,7 +165,7 @@ header {
     font-size: 11px; color: var(--text-gray); display: flex; justify-content: space-between;
 }
 
-/* --- KATEGORİ ALANI --- */
+/* --- KATEGORİ ALANI (Düzeltildi) --- */
 .genre-section { margin-top: 30px; }
 .genre-row { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
 .genre-row::-webkit-scrollbar { height: 6px; }
