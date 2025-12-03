@@ -30,7 +30,7 @@
             <div class="hero-info">
                 <div class="hero-meta">
                     <span id="hero-type"><i class="fa fa-circle-play"></i> TV</span>
-                    <span id="hero-date" style="color:#ddd;"><i class="fa fa-calendar"></i> -</span>
+                    <span id="hero-date"><i class="fa fa-calendar"></i> -</span>
                     <span style="background: var(--primary); color:black; padding:2px 8px; border-radius:4px; font-weight:bold;">HD</span>
                 </div>
                 <h2 id="hero-title">Yükleniyor...</h2>
@@ -65,7 +65,7 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <a href="index.html" class="logo">
-                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR" style="height:35px; margin-bottom:15px;">
+                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR" style="height:30px; margin-bottom:15px;">
                 </a>
                 <p>AnimeDexTR, anime severler için oluşturulmuş, yüksek kalitede ve ücretsiz bir izleme platformudur. Reklamsız deneyimin tadını çıkarın.</p>
             </div>
@@ -89,44 +89,34 @@
         
         <div class="legal-warning">
             <p class="legal-text">Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
-            <p class="copyright-text">© <span id="yil"></span> AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
+            <p class="copyright-text">© 2025 AnimeDexTR. Geliştiren: <span class="dev-credit">Kerim Demirkaynak</span></p>
         </div>
     </footer>
 
     <script src="veri/seriler.js"></script>
     <script>
-        // Değişkenleri global tanımlıyoruz
+        // Değişkenler
         let currentSlideIndex = 0;
         let slideInterval;
         let visibleCount = 12; 
         const loadAmount = 6;
         let filteredSeries = []; 
 
-        // TÜM İŞLEMLERİ SAYFA YÜKLENDİKTEN SONRA YAPIYORUZ
+        // Sayfa yüklendiğinde çalış
         window.addEventListener('load', () => {
-            // Footer Yılı Güncelleme
-            const yilElement = document.getElementById('yil');
-            if(yilElement) yilElement.innerText = new Date().getFullYear();
-
-            // Veri Kontrolü
             if (typeof TUM_SERILER !== 'undefined') {
                 filteredSeries = TUM_SERILER; 
                 listeyiRenderEt();
                 kategorileriRenderEt();
                 spotlightBaslat();
                 
-                // URL'den Arama Parametresi Kontrolü
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('q')) {
-                    const searchInput = document.getElementById('aramaInput');
-                    if(searchInput) {
-                        searchInput.value = urlParams.get('q');
-                        aramaYap();
-                    }
+                    document.getElementById('aramaInput').value = urlParams.get('q');
+                    aramaYap();
                 }
             } else {
-                console.error("seriler.js dosyası yüklenemedi!");
-                document.getElementById('anime-listesi').innerHTML = "<p style='color:red; text-align:center;'>Veri dosyası yüklenemedi. Lütfen veri/seriler.js dosyasını kontrol edin.</p>";
+                console.error("Veri dosyası (seriler.js) yüklenemedi!");
             }
         });
 
@@ -158,7 +148,7 @@
                 <a href="izle.html?id=${anime.id}" class="anime-card">
                     <div class="poster-box">
                         <span class="ep-tag">${bolumSayisi}</span>
-                        <img src="${anime.poster}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Resim+Yok'">
+                        <img src="${anime.poster}" loading="lazy">
                         <div class="hover-play"><i class="fa fa-play-circle"></i></div>
                     </div>
                     <div class="card-info">
@@ -176,7 +166,7 @@
                 if (visibleCount >= filteredSeries.length) {
                     loadBtn.style.display = "none";
                 } else {
-                    loadBtn.style.display = "block";
+                    loadBtn.style.display = "inline-block"; // Görünür yapıldı
                 }
             }
         }
@@ -197,7 +187,7 @@
             const spotlight = document.getElementById('spotlight-area');
             const kategori = document.getElementById('kategori-alani');
             
-            if(spotlight) spotlight.style.display = input ? 'none' : 'flex';
+            if(spotlight) spotlight.style.display = input ? 'none' : 'flex'; // flex olarak göster
             if(kategori) kategori.style.display = input ? 'none' : 'block';
             
             listeyiRenderEt();
@@ -273,14 +263,14 @@
                     const sureText = anime.bolumSayisi ? `${anime.bolumSayisi} Bölüm` : "??";
                     
                     cardsHtml += `
-                    <a href="izle.html?id=${anime.id}" class="anime-card" style="min-width:170px; max-width:170px;">
+                    <a href="izle.html?id=${anime.id}" class="anime-card">
                         <div class="poster-box">
                             <span class="ep-tag">${sureText}</span>
                             <img src="${anime.poster}" loading="lazy">
                             <div class="hover-play"><i class="fa fa-play-circle"></i></div>
                         </div>
                         <div class="card-info">
-                            <span class="anime-title" style="font-size:13px;">${anime.isim}</span>
+                            <span class="anime-title" style="font-size:12px;">${anime.isim}</span>
                         </div>
                     </a>`;
                 });
