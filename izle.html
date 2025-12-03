@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İzle - AnimeDexTR</title>
+    
+    <meta property="og:type" content="video.other">
+    <meta property="og:image" content="https://raw.githubusercontent.com/KerimDemirkaynak/kerimdemirkaynak.github.io/refs/heads/main/resimler/20241121_055155.jpg">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/KerimDemirkaynak/kerimdemirkaynak.github.io/refs/heads/main/resimler/20241121_055155.jpg">
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,7 +18,7 @@
 
     <header>
         <a href="index.html" class="logo">
-            <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR">
+            <img src="https://raw.githubusercontent.com/KerimDemirkaynak/AnimeDexTR/refs/heads/main/static/header.png" alt="AnimeDexTR">
         </a>
         <div class="search-box">
             <form onsubmit="event.preventDefault(); aramaYonlendir();">
@@ -61,7 +67,7 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <a href="index.html" class="logo">
-                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR" style="height:35px; margin-bottom:15px;">
+                    <img src="https://raw.githubusercontent.com/KerimDemirkaynak/AnimeDexTR/refs/heads/main/static/header.png" alt="AnimeDexTR" style="height:35px; margin-bottom:15px;">
                 </a>
                 <p>AnimeDexTR, anime severler için oluşturulmuş, yüksek kalitede ve ücretsiz bir izleme platformudur. Reklamsız deneyimin tadını çıkarın.</p>
             </div>
@@ -82,10 +88,9 @@
                 </ul>
             </div>
         </div>
-        
         <div class="legal-warning">
             <p class="legal-text">Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
-            <p class="copyright-text">© 2025 AnimeDexTR. Geliştiren: <span class="dev-credit">Kerim Demirkaynak</span></p>
+            <p class="copyright-text">© 2025 AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
         </div>
     </footer>
 
@@ -133,7 +138,6 @@
                 btn.onclick = () => {
                     document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
                     document.getElementById('baslik').innerText = `${anime.isim} - ${bolum.no}. Bölüm`;
                     
                     let kaynaklar = [];
@@ -142,7 +146,6 @@
                     } else if (bolum.link) {
                         kaynaklar = [{isim: 'Varsayılan', link: bolum.link}];
                     }
-                    
                     renderSources(kaynaklar);
                 };
 
@@ -178,7 +181,6 @@
                         activeName.innerText = src.isim;
                         player.innerHTML = `<iframe src="${src.link}" allowfullscreen scrolling="no" frameborder="0"></iframe>`;
                     };
-                    
                     listDiv.appendChild(btn);
                 });
             } else {
@@ -189,16 +191,12 @@
 
         function aramaYonlendir() {
             const terim = document.getElementById('aramaInput').value;
-            if(terim) {
-                window.location.href = `index.html?q=${encodeURIComponent(terim)}`;
-            }
+            if(terim) window.location.href = `index.html?q=${encodeURIComponent(terim)}`;
         }
 
-        // Giscus Yorum
         document.addEventListener("DOMContentLoaded", function () {
             const currentAnimeId = new URLSearchParams(window.location.search).get('id');
             if (!currentAnimeId) return;
-
             const giscusContainer = document.getElementById("giscus-container");
             const script = document.createElement("script");
             script.src = "https://giscus.app/client.js";
