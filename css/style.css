@@ -269,62 +269,92 @@ footer {
     #anime-listesi { grid-template-columns: repeat(2, 1fr); gap: 15px; } 
 }
 
-/* --- SLIDER KONTROLLERİ --- */
+/* --- SPOTLIGHT SLIDER (HiAnime Tarzı) --- */
+.hero-wrapper {
+    position: relative; width: 100%; height: 480px; /* Biraz daha yükseklik */
+    overflow: hidden; display: flex; align-items: center; margin-bottom: 30px;
+}
+
+/* Geçiş Animasyonu İçin */
+.hero-content {
+    position: relative; z-index: 1; width: 100%; max-width: 1200px;
+    margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 40px;
+    opacity: 1; transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+}
+.hero-content.fade-out { opacity: 0; transform: translateX(-20px); }
+
+/* Slider Butonları */
 .slider-nav-btn {
     position: absolute; top: 50%; transform: translateY(-50%);
-    background: rgba(0,0,0,0.5); color: white; border: none;
-    padding: 15px; cursor: pointer; font-size: 24px; z-index: 10;
-    border-radius: 50%; transition: 0.3s;
+    width: 50px; height: 50px;
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(5px);
+    color: white; border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%; cursor: pointer; font-size: 18px; z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease; opacity: 0; /* Fare gelince görünür */
 }
-.slider-nav-btn:hover { background: var(--primary); color: #000; }
+.hero-wrapper:hover .slider-nav-btn { opacity: 1; } /* Hover efekti */
+
+.slider-nav-btn:hover {
+    background: var(--primary); color: #000; border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(255, 186, 222, 0.6); transform: translateY(-50%) scale(1.1);
+}
 .prev-slide { left: 20px; }
 .next-slide { right: 20px; }
 
-/* --- DAHA FAZLA GÖSTER BUTONU --- */
-.load-more-container { text-align: center; margin-top: 30px; }
-.btn-load-more {
-    background: #333; color: white; border: 1px solid #444;
-    padding: 10px 30px; border-radius: 20px; cursor: pointer;
-    font-family: 'Poppins', sans-serif; transition: 0.3s;
-}
-.btn-load-more:hover { background: var(--primary); color: #000; border-color: var(--primary); }
-
-/* --- KAYNAK SEÇİMİ (İZLEME SAYFASI) --- */
-.source-selector {
-    margin-bottom: 20px; background: var(--bg-card); padding: 15px;
-    border-radius: 12px;
-}
-.source-title { font-size: 14px; color: var(--primary); margin-bottom: 10px; font-weight: 600; }
-.source-btn {
-    background: #151618; color: #fff; border: none; padding: 8px 15px;
-    margin-right: 10px; border-radius: 5px; cursor: pointer; font-size: 12px;
-    transition: 0.2s;
-}
-.source-btn:hover, .source-btn.active {
-    background: var(--primary); color: #000; font-weight: bold;
+/* --- FOOTER DÜZENLEMELERİ (Fix) --- */
+footer {
+    background-color: #111;
+    padding: 50px 0 20px 0;
+    margin-top: auto;
+    border-top: 1px solid #222;
 }
 
-/* --- FOOTER DÜZENİ --- */
-footer { text-align: left; padding: 40px 5%; background: #111; display: block; height: auto; }
 .footer-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px; max-width: 1200px; margin: 0 auto;
+    display: grid;
+    /* Mobilde tek, tablette 2, PC'de 3 kolon */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 40px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px;
 }
-.footer-col h3 { color: var(--primary); margin-bottom: 15px; font-size: 16px; }
-.footer-col p, .footer-col li a { color: #888; font-size: 13px; line-height: 1.6; }
-.footer-col ul { list-style: none; }
-.footer-col ul li { margin-bottom: 8px; }
-.footer-col ul li a:hover { color: var(--primary); }
-.legal-warning {
-    border-top: 1px solid #222; margin-top: 30px; padding-top: 20px;
-    text-align: center; color: #555; font-size: 11px;
-}
-.dev-credit { color: var(--primary); font-weight: bold; text-decoration: none; }
 
-/* --- KATEGORİ BÖLÜMÜ --- */
-.genre-section { margin-top: 40px; }
-.genre-row { 
-    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; 
+.footer-col { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-col p { color: #888; font-size: 14px; line-height: 1.6; margin-top: 10px; max-width: 90%; }
+.footer-col h3 { color: var(--text-white); font-size: 16px; margin-bottom: 20px; font-weight: 600; border-left: 3px solid var(--primary); padding-left: 10px; }
+.footer-col ul { list-style: none; padding: 0; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { color: #aaa; font-size: 14px; transition: 0.2s; }
+.footer-col ul li a:hover { color: var(--primary); padding-left: 5px; }
+
+/* Yasal Uyarı Alanı */
+.legal-warning {
+    background: #0d0d0d;
+    margin-top: 50px;
+    padding: 20px;
+    border-top: 1px solid #222;
+    text-align: center;
 }
-.genre-row::-webkit-scrollbar { height: 6px; }
-.genre-row .anime-card { min-width: 160px; max-width: 160px; }
+.legal-text {
+    max-width: 900px; margin: 0 auto;
+    color: #555; font-size: 12px; line-height: 1.6;
+}
+.copyright-text {
+    color: #777; font-size: 13px; margin-top: 10px; font-weight: 500;
+}
+.dev-credit { color: var(--primary); text-decoration: none; transition:0.3s;}
+.dev-credit:hover { text-shadow: 0 0 10px var(--primary); }
+
+/* --- İZLEME SAYFASI ÖZET DÜZELTME --- */
+/* Özetin tamamını göster */
+#ozet {
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
+    color: #ccc;
+    line-height: 1.7;
+    font-size: 14px;
+}
