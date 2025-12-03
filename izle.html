@@ -60,26 +60,36 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <img src="https://hianime.pe/images/logo.png?v=0.1" style="height:30px; margin-bottom:15px;">
-                <p>Anime izlemenin en hızlı adresi.</p>
+                <a href="index.html" class="logo">
+                    <img src="https://hianime.pe/images/logo.png?v=0.1" alt="AnimeDexTR" style="height:35px; margin-bottom:15px;">
+                </a>
+                <p>AnimeDexTR, anime severler için oluşturulmuş, yüksek kalitede ve ücretsiz bir izleme platformudur. Reklamsız deneyimin tadını çıkarın.</p>
             </div>
             <div class="footer-col">
-                <h3>Menü</h3>
+                <h3>Hızlı Erişim</h3>
                 <ul>
                     <li><a href="index.html">Ana Sayfa</a></li>
                     <li><a href="hakkinda.html">Hakkında</a></li>
+                    <li><a href="iletisim.html">İletişim</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Yasal & Yardım</h3>
+                <ul>
+                    <li><a href="hakkinda.html#dmca">Telif Hakkı (DMCA)</a></li>
+                    <li><a href="hakkinda.html#tos">Kullanım Şartları</a></li>
+                    <li><a href="404.html">Hata Bildir</a></li>
                 </ul>
             </div>
         </div>
         <div class="legal-warning">
             <p class="legal-text">Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
-            <p class="copyright-text">© <span id="yil"></span> AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
+            <p class="copyright-text">© 2025 AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
         </div>
     </footer>
 
+    <script src="veri/seriler.js"></script>
     <script>
-        document.getElementById('yil').innerText = new Date().getFullYear();
-
         const urlParams = new URLSearchParams(window.location.search);
         const animeId = urlParams.get('id');
 
@@ -88,7 +98,11 @@
             script.src = `veri/detaylar/${animeId}.js`;
             script.onload = function() {
                 if (typeof ANIME_DETAY !== 'undefined') {
-                    yukle(ANIME_DETAY);
+                    // Ana veritabanından (seriler.js) bilgiyi bul
+                    const mainData = TUM_SERILER.find(a => a.id === animeId);
+                    
+                    // Detay verisi ile ana veriyi birleştir
+                    yukle(ANIME_DETAY, mainData);
                 }
             };
             script.onerror = function() {
@@ -97,17 +111,22 @@
             document.body.appendChild(script);
         }
 
-        function yukle(anime) {
+        function yukle(anime, mainData) {
             document.getElementById('baslik').innerText = anime.isim;
-            document.getElementById('ozet').innerText = anime.ozet;
+            
+            // ÖZET VE SÜRE - seriler.js'den (mainData) çekiliyor
+            if(mainData) {
+                document.getElementById('ozet').innerText = mainData.ozet || anime.ozet || "Özet bulunamadı.";
+                document.getElementById('meta-sure').innerHTML = `<i class="fa fa-clock"></i> ${mainData.sure || '?? Dk.'}`;
+                document.getElementById('meta-yil').innerHTML = `<i class="fa fa-calendar"></i> ${mainData.yil || anime.yil || '?'}`;
+                document.getElementById('meta-tur').innerHTML = `<i class="fa fa-tags"></i> ${mainData.tur || anime.tur || '?'}`;
+            } else {
+                // Yedek (Eğer seriler.js'de yoksa)
+                document.getElementById('ozet').innerText = anime.ozet;
+            }
+
             document.title = anime.isim + " - İzle";
             
-            // Meta verileri doldur
-            document.getElementById('meta-yil').innerHTML = `<i class="fa fa-calendar"></i> ${anime.yil || '?'}`;
-            document.getElementById('meta-tur').innerHTML = `<i class="fa fa-tags"></i> ${anime.tur || '?'}`;
-            // Süre bilgisini seriler.js'den çekmek için TUM_SERILER'e bakmamız gerekebilir veya detay dosyasına eklemeniz gerekir.
-            // Şimdilik boş bırakıyoruz veya detay dosyasına eklerseniz buraya anime.sure yazabilirsiniz.
-
             const listeDiv = document.getElementById('bolum-listesi');
             
             anime.bolumler.forEach((bolum, index) => {
@@ -121,7 +140,6 @@
                     
                     document.getElementById('baslik').innerText = `${anime.isim} - ${bolum.no}. Bölüm`;
                     
-                    // Kaynakları İşle
                     let kaynaklar = [];
                     if(bolum.kaynaklar) {
                         kaynaklar = bolum.kaynaklar;
