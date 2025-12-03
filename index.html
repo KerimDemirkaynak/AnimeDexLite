@@ -23,9 +23,6 @@
     </header>
 
     <div class="hero-wrapper" id="spotlight-area">
-        <button class="slider-nav-btn prev-slide" onclick="changeSlide(-1)"><i class="fa fa-chevron-left"></i></button>
-        <button class="slider-nav-btn next-slide" onclick="changeSlide(1)"><i class="fa fa-chevron-right"></i></button>
-        
         <div class="hero-bg" id="hero-bg"></div>
         
         <div class="hero-content" id="hero-content">
@@ -41,6 +38,9 @@
                 <a href="#" class="btn-watch" id="hero-btn"><i class="fa fa-play"></i> Hemen İzle</a>
             </div>
         </div>
+
+        <button class="slider-nav-btn prev-slide" onclick="changeSlide(-1)"><i class="fa fa-angle-left"></i></button>
+        <button class="slider-nav-btn next-slide" onclick="changeSlide(1)"><i class="fa fa-angle-right"></i></button>
     </div>
 
     <div class="container">
@@ -72,24 +72,24 @@
             <div class="footer-col">
                 <h3>Hızlı Erişim</h3>
                 <ul>
-                    <li><a href="index.html"><i class="fa fa-angle-right"></i> Ana Sayfa</a></li>
-                    <li><a href="hakkinda.html"><i class="fa fa-angle-right"></i> Hakkında</a></li>
-                    <li><a href="iletisim.html"><i class="fa fa-angle-right"></i> İletişim</a></li>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="hakkinda.html">Hakkında</a></li>
+                    <li><a href="iletisim.html">İletişim</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h3>Yasal & Yardım</h3>
                 <ul>
-                    <li><a href="hakkinda.html#dmca"><i class="fa fa-angle-right"></i> Telif Hakkı (DMCA)</a></li>
-                    <li><a href="hakkinda.html#tos"><i class="fa fa-angle-right"></i> Kullanım Şartları</a></li>
-                    <li><a href="404.html"><i class="fa fa-angle-right"></i> Hata Bildir</a></li>
+                    <li><a href="hakkinda.html#dmca">Telif Hakkı (DMCA)</a></li>
+                    <li><a href="hakkinda.html#tos">Kullanım Şartları</a></li>
+                    <li><a href="404.html">Hata Bildir</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="legal-warning">
             <p class="legal-text">Yasal Uyarı: Bu site sunucusunda herhangi bir dosya saklamamaktadır. Tüm içerikler bağımsız üçüncü parti web siteleri tarafından sağlanmaktadır.</p>
-            <p class="copyright-text">© <span id="yil"></span> AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
+            <p class="copyright-text">© 2025 AnimeDexTR. Geliştiren: <a href="https://kerimdemirkaynak.github.io" target="_blank" class="dev-credit">Kerim Demirkaynak</a></p>
         </div>
     </footer>
 
@@ -97,7 +97,6 @@
     <script>
         document.getElementById('yil').innerText = new Date().getFullYear();
 
-        // DEĞİŞKENLER
         let currentSlideIndex = 0;
         let slideInterval;
         let visibleCount = 12; 
@@ -119,7 +118,7 @@
             }
         });
 
-        // --- LİSTELEME VE KART YAPISI ---
+        // --- LİSTELEME ---
         function listeyiRenderEt() {
             const listeDiv = document.getElementById('anime-listesi');
             const loadBtn = document.getElementById('loadMoreBtn');
@@ -140,14 +139,14 @@
                 // İSTENİLEN DEĞİŞİKLİK:
                 // Sol üst (ep-tag): Bölüm Sayısı
                 // Sağ alt (meta): Süre (Dakika)
-                const solUstEtiket = `${anime.bolumSayisi || '?'} Bölüm`;
-                const sagAltBilgi = `${anime.sure || '? Dk.'}`;
+                const bolumSayisi = anime.bolumSayisi ? `${anime.bolumSayisi} Bölüm` : "?";
+                const sureBilgisi = anime.sure ? `${anime.sure}` : "?? Dk.";
                 const tipText = anime.tip || "TV";
                 
                 const html = `
                 <a href="izle.html?id=${anime.id}" class="anime-card">
                     <div class="poster-box">
-                        <span class="ep-tag">${solUstEtiket}</span>
+                        <span class="ep-tag">${bolumSayisi}</span>
                         <img src="${anime.poster}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Resim+Yok'">
                         <div class="hover-play"><i class="fa fa-play-circle"></i></div>
                     </div>
@@ -155,7 +154,7 @@
                         <span class="anime-title">${anime.isim}</span>
                         <div class="anime-meta">
                             <span>${tipText}</span>
-                            <span><i class="fa fa-clock"></i> ${sagAltBilgi}</span>
+                            <span><i class="fa fa-clock"></i> ${sureBilgisi}</span>
                         </div>
                     </div>
                 </a>`;
@@ -185,7 +184,7 @@
             listeyiRenderEt();
         }
 
-        // --- SPOTLIGHT SLIDER (ANİMASYONLU) ---
+        // --- SPOTLIGHT SLIDER ---
         function spotlightBaslat() {
             if(TUM_SERILER.length > 0) {
                 updateSpotlight(0);
@@ -194,22 +193,17 @@
         }
 
         function changeSlide(direction) {
-            // Önce içeriği gizle (Fade Out)
             const content = document.getElementById('hero-content');
             content.classList.add('fade-out');
 
             setTimeout(() => {
-                // İndexi güncelle
                 currentSlideIndex += direction;
                 if (currentSlideIndex >= TUM_SERILER.length) currentSlideIndex = 0;
                 if (currentSlideIndex < 0) currentSlideIndex = TUM_SERILER.length - 1;
                 
-                // İçeriği güncelle
                 updateSpotlight(currentSlideIndex);
-                
-                // İçeriği göster (Fade In)
                 content.classList.remove('fade-out');
-            }, 500); // CSS transition süresiyle aynı olmalı (0.5s)
+            }, 500);
 
             clearInterval(slideInterval);
             slideInterval = setInterval(() => changeSlide(1), 6000);
@@ -225,7 +219,6 @@
             // Spotlight'ta Seriler.js'den gelen Tarih
             document.getElementById('hero-date').innerHTML = `<i class="fa fa-calendar"></i> ${anime.yil || 'Bilinmiyor'}`;
             document.getElementById('hero-type').innerHTML = `<i class="fa fa-circle-play"></i> ${anime.tip || 'TV'}`;
-            
             document.getElementById('hero-desc').innerText = anime.ozet || "Özet bilgisi bulunamadı.";
         }
 
@@ -253,7 +246,7 @@
                     const sureText = anime.bolumSayisi ? `${anime.bolumSayisi} Bölüm` : "??";
                     
                     cardsHtml += `
-                    <a href="izle.html?id=${anime.id}" class="anime-card" style="min-width:160px; max-width:160px;">
+                    <a href="izle.html?id=${anime.id}" class="anime-card">
                         <div class="poster-box">
                             <span class="ep-tag">${sureText}</span>
                             <img src="${anime.poster}" loading="lazy">
@@ -267,7 +260,7 @@
 
                 const sectionHtml = `
                 <div class="genre-section">
-                    <div class="section-header" style="border-left-color: ${getRandomColor()};">
+                    <div class="section-header">
                         <h2>${turAdi}</h2>
                     </div>
                     <div class="genre-row">
@@ -276,11 +269,6 @@
                 </div>`;
                 alan.innerHTML += sectionHtml;
             }
-        }
-
-        function getRandomColor() {
-            const colors = ['#ffbade', '#ff7675', '#74b9ff', '#55efc4', '#a29bfe', '#ffeaa7'];
-            return colors[Math.floor(Math.random() * colors.length)];
         }
     </script>
 </body>
