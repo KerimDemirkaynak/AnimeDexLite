@@ -64,45 +64,71 @@ header {
     cursor: pointer; font-size: 12px; padding: 5px;
 }
 
-/* --- SPOTLIGHT SLIDER (GÜNCELLENDİ) --- */
+/* --- SPOTLIGHT SLIDER (SIRALI ANİMASYONLU) --- */
 .hero-wrapper {
     position: relative; width: 100%; height: 400px;
     overflow: hidden; display: flex; align-items: center; margin-bottom: 20px;
 }
 
+/* Arka Plan */
 .hero-bg {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background-size: cover; background-position: center;
     filter: blur(15px) brightness(0.4); 
     z-index: 0;
-    
-    /* Yeni Animasyon Ayarları */
     transform: scale(1.05);
     transition: opacity 0.5s ease-in-out, transform 0.5s ease;
     opacity: 1;
 }
 
+/* İçerik Taşıyıcı */
 .hero-content {
     position: relative; z-index: 1; width: 100%; max-width: 1200px;
     margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 30px;
-    
-    /* Yeni Animasyon Ayarları */
-    transform: translateY(0);
-    opacity: 1;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* JS ile 'changing' sınıfı eklendiğinde olacaklar */
+/* --- SIRALI ANİMASYON TANIMLARI --- */
+
+/* 1. Tüm hareketli parçalar için ortak ayar */
+.hero-poster, 
+.hero-info h2, 
+.hero-info .hero-meta, 
+.hero-info p, 
+.hero-info .btn-watch {
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Yumuşak yaylanma */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 2. GİRİŞ SIRASI (Delay Ayarları - Ekrana Gelirken) */
+.hero-poster          { transition-delay: 0ms; }   /* 1. Poster */
+.hero-info .hero-meta { transition-delay: 100ms; } /* 2. Etiketler */
+.hero-info h2         { transition-delay: 200ms; } /* 3. Başlık */
+.hero-info p          { transition-delay: 300ms; } /* 4. Açıklama */
+.hero-info .btn-watch { transition-delay: 400ms; } /* 5. Buton */
+
+
+/* --- ÇIKIŞ ANİMASYONU (.changing sınıfı varken) --- */
+
+/* Arka plan kaybolur */
 .hero-wrapper.changing #hero-bg {
     opacity: 0;
     transform: scale(1);
 }
 
-.hero-wrapper.changing #hero-content {
+/* Tüm elemanlar aşağı kayar ve silinir (Delay olmadan, hızlıca) */
+.hero-wrapper.changing .hero-poster,
+.hero-wrapper.changing .hero-info h2,
+.hero-wrapper.changing .hero-info .hero-meta,
+.hero-wrapper.changing .hero-info p,
+.hero-wrapper.changing .hero-info .btn-watch {
     opacity: 0;
-    transform: translateY(30px); /* Aşağı kayarak yok olma */
+    transform: translateY(30px); /* Aşağı it */
+    transition-delay: 0ms !important; /* Hepsini aynı anda sil */
+    transition-duration: 0.3s; /* Hızlı çıkış */
 }
 
+/* --- SLIDER İÇERİK STİLLERİ --- */
 .hero-poster {
     width: 180px; height: 270px; border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6); object-fit: cover; flex-shrink: 0;
@@ -125,7 +151,7 @@ header {
 }
 .btn-watch:hover { transform: scale(1.05); background: var(--primary-hover); }
 
-/* Slider Navigasyon */
+/* Slider Okları */
 .slider-nav-btn {
     position: absolute; bottom: 20px; right: 20px; z-index: 10;
     width: 40px; height: 40px;
