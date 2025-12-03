@@ -1,15 +1,15 @@
-/* --- GENEL AYARLAR --- */
+/* --- GENEL AYARLAR & RESET --- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --bg-body: #202125;
-    --bg-header: rgba(32, 33, 37, 0.95);
+    --bg-body: #14151a;
+    --bg-header: rgba(20, 21, 26, 0.98);
     --bg-card: #2a2c31;
     --primary: #ffbade;
     --primary-hover: #ff9ecd;
     --text-white: #ffffff;
     --text-gray: #aaaaaa;
-    --card-radius: 12px;
+    --card-radius: 8px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -22,15 +22,17 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-size: 14px; /* Genel yazı boyutu küçültüldü */
 }
 
 a { text-decoration: none; color: inherit; transition: 0.3s; }
+ul { list-style: none; }
 
 /* --- HEADER --- */
 header {
     background-color: var(--bg-header);
     backdrop-filter: blur(10px);
-    padding: 10px 5%;
+    padding: 0 3%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,110 +40,113 @@ header {
     top: 0;
     z-index: 1000;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    height: 70px;
+    height: 60px;
 }
 
-.logo img { height: 40px; object-fit: contain; }
+.logo img { height: 30px; width: auto; object-fit: contain; }
 
-.search-box { position: relative; width: 300px; }
+.search-box { position: relative; width: 250px; }
 .search-box input {
     width: 100%;
-    background: #151618;
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 10px 20px 10px 45px;
-    border-radius: 30px;
+    background: #000;
+    border: 1px solid #333;
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
     color: white;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     transition: all 0.3s;
 }
-.search-box input:focus { border-color: var(--primary); background: #000; }
+.search-box input:focus { border-color: var(--primary); }
 .search-btn {
-    position: absolute; left: 5px; top: 50%; transform: translateY(-50%);
-    background: transparent; border: none; color: var(--text-gray); cursor: pointer;
-    padding: 10px;
+    position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--text-gray);
+    cursor: pointer; font-size: 12px; padding: 5px;
 }
 
-/* --- SPOTLIGHT SLIDER (MOBİL UYUMLU) --- */
+/* --- SPOTLIGHT SLIDER --- */
 .hero-wrapper {
-    position: relative; width: 100%; 
-    height: 500px; /* PC Yüksekliği */
-    overflow: hidden; display: flex; align-items: center; margin-bottom: 30px;
+    position: relative; width: 100%; height: 400px; /* Yükseklik küçültüldü */
+    overflow: hidden; display: flex; align-items: center; margin-bottom: 20px;
 }
 
 .hero-bg {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background-size: cover; background-position: center;
-    filter: blur(20px) brightness(0.4); transform: scale(1.1); z-index: 0;
+    filter: blur(15px) brightness(0.4); transform: scale(1.1); z-index: 0;
 }
 
 .hero-content {
     position: relative; z-index: 1; width: 100%; max-width: 1200px;
-    margin: 0 auto; padding: 0 40px; display: flex; align-items: center; gap: 40px;
-    opacity: 1; transition: opacity 0.5s ease, transform 0.5s ease;
+    margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 30px;
+    opacity: 1; transition: opacity 0.5s ease;
 }
-.hero-content.fade-out { opacity: 0; transform: translateX(-20px); }
+.hero-content.fade-out { opacity: 0; }
 
 .hero-poster {
-    width: 230px; height: 340px; border-radius: 10px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.6); object-fit: cover;
-    flex-shrink: 0;
+    width: 180px; height: 270px; border-radius: 8px; /* Poster küçültüldü */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6); object-fit: cover; flex-shrink: 0;
 }
 
-.hero-info { flex: 1; } /* Bilgi alanının kalan boşluğu doldurması için */
-
 .hero-info h2 {
-    font-size: 42px; font-weight: 800; line-height: 1.2; margin-bottom: 20px;
-    color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    font-size: 32px; /* Başlık küçültüldü */
+    font-weight: 700; line-height: 1.2; margin-bottom: 10px;
+    color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
 
 .hero-meta {
-    display: flex; gap: 15px; margin-bottom: 20px; font-size: 14px; color: #ccc; font-weight: 500;
+    display: flex; gap: 10px; margin-bottom: 15px; font-size: 12px; color: #ddd; align-items: center;
 }
 
 .btn-watch {
-    background: var(--primary); color: #000; padding: 12px 35px; border-radius: 30px;
-    font-weight: 600; display: inline-flex; align-items: center; gap: 10px; font-size: 15px;
-    margin-top: 10px; transition: 0.3s;
+    background: var(--primary); color: #000; padding: 10px 25px; border-radius: 25px;
+    font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 13px;
+    box-shadow: 0 5px 15px rgba(255, 186, 222, 0.3);
 }
-.btn-watch:hover { transform: scale(1.05); background: #fff; }
+.btn-watch:hover { transform: scale(1.05); background: var(--primary-hover); }
 
 /* Slider Navigasyon */
 .slider-nav-btn {
-    position: absolute; bottom: 20px; z-index: 10;
-    width: 50px; height: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white; border: none; border-radius: 5px;
-    cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+    position: absolute; bottom: 20px; right: 20px; z-index: 10;
+    width: 40px; height: 40px;
+    background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
+    color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 5px;
+    cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
     transition: 0.3s;
 }
-.slider-nav-btn:hover { background: var(--primary); color: #000; }
-.prev-slide { right: 80px; }
+.slider-nav-btn:hover { background: var(--primary); color: #000; border-color: var(--primary); }
+.prev-slide { right: 70px; }
 .next-slide { right: 20px; }
 
-/* --- KARTLAR VE LİSTE --- */
-.container { max-width: 1300px; margin: 0 auto; padding: 0 20px 50px 20px; width: 100%; }
+
+/* --- LİSTE VE KARTLAR --- */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px 20px; width: 100%; }
+
 .section-header {
-    margin-bottom: 25px; border-left: 5px solid var(--primary); padding-left: 15px;
+    margin-bottom: 20px; border-left: 4px solid var(--primary); padding-left: 12px;
 }
-.section-header h2 { font-size: 22px; font-weight: 600; color: var(--primary); }
+.section-header h2 { font-size: 18px; font-weight: 700; color: var(--primary); }
 
 #anime-listesi {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Kartlar küçüldü */
+    gap: 15px;
 }
 
 .anime-card {
     position: relative; border-radius: var(--card-radius); overflow: hidden;
-    background: var(--bg-card); transition: transform 0.3s; display: block;
+    background: var(--bg-card); transition: transform 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-.anime-card:hover { transform: translateY(-7px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.anime-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
 
 .poster-box { position: relative; width: 100%; aspect-ratio: 2/3; overflow: hidden; }
-.poster-box img { width: 100%; height: 100%; object-fit: cover; }
+.poster-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.anime-card:hover .poster-box img { transform: scale(1.05); }
 
 .ep-tag {
-    position: absolute; top: 10px; left: 10px; background: #fff;
-    color: #000; font-size: 11px; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+    position: absolute; top: 6px; left: 6px; background: rgba(255,255,255,0.9);
+    color: #000; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px;
 }
 
 .hover-play {
@@ -150,109 +155,170 @@ header {
     align-items: center; opacity: 0; transition: 0.3s;
 }
 .anime-card:hover .hover-play { opacity: 1; }
-.hover-play i { font-size: 45px; color: var(--primary); }
+.hover-play i { font-size: 40px; color: var(--primary); }
 
-.card-info { padding: 12px; }
+.card-info { padding: 10px; }
 .anime-title {
-    font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden;
-    text-overflow: ellipsis; color: white; display: block; margin-bottom: 5px;
+    font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; color: white; display: block; margin-bottom: 3px;
 }
 .anime-meta {
-    font-size: 12px; color: var(--text-gray); display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text-gray); display: flex; justify-content: space-between;
 }
 
 /* --- KATEGORİ ALANI --- */
-.genre-section { margin-top: 40px; margin-bottom: 20px; }
-.genre-row { 
-    display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; 
-}
-.genre-row::-webkit-scrollbar { height: 8px; }
-.genre-row::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
-.genre-row .anime-card { 
-    min-width: 170px; max-width: 170px;
-}
+.genre-section { margin-top: 30px; }
+.genre-row { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+.genre-row::-webkit-scrollbar { height: 6px; }
+.genre-row::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+.genre-row .anime-card { min-width: 150px; max-width: 150px; }
 
-/* --- DAHA FAZLA GÖSTER BUTONU --- */
-.load-more-container { text-align: center; margin-top: 40px; margin-bottom: 20px; }
+/* --- YÜKLE BUTONU --- */
+.load-more-container { text-align: center; margin-top: 30px; }
 .btn-load-more {
-    background: #2a2c31; color: white; border: none;
-    padding: 12px 40px; border-radius: 30px; cursor: pointer;
-    font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600;
-    transition: 0.3s;
+    background: #25262b; color: #ccc; border: 1px solid #333;
+    padding: 10px 30px; border-radius: 20px; cursor: pointer;
+    font-family: 'Poppins', sans-serif; font-size: 13px; transition: 0.3s;
 }
-.btn-load-more:hover { background: var(--primary); color: #000; }
+.btn-load-more:hover { background: var(--primary); color: #000; border-color: var(--primary); }
 
-/* --- FOOTER --- */
+
+/* --- İZLEME SAYFASI (DÜZELTİLDİ) --- */
+.watch-container {
+    display: flex; gap: 25px; max-width: 1200px; margin: 20px auto; padding: 0 20px;
+    align-items: flex-start; /* Yan yana hizalama */
+}
+
+.main-content { flex: 1; min-width: 0; /* İçeriğin taşmasını önler */ }
+.sidebar { width: 320px; flex-shrink: 0; /* Sidebar genişliği sabit */ }
+
+.player-box {
+    position: relative; padding-bottom: 56.25%; background: #000;
+    border-radius: 8px; overflow: hidden; margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.player-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+.source-selector {
+    background: var(--bg-card); padding: 12px; border-radius: 8px; margin-bottom: 20px;
+}
+.source-title { font-size: 12px; color: var(--primary); margin-bottom: 8px; font-weight: 600; }
+.source-btn {
+    background: #151618; color: #fff; border: none; padding: 6px 12px;
+    margin-right: 8px; border-radius: 4px; cursor: pointer; font-size: 12px;
+    transition: 0.2s;
+}
+.source-btn:hover, .source-btn.active { background: var(--primary); color: #000; font-weight: 600; }
+
+.anime-info-box {
+    background: var(--bg-card); padding: 20px; border-radius: 8px; margin-bottom: 20px;
+}
+.anime-info-box h1 { color: var(--primary); margin-bottom: 10px; font-size: 22px; font-weight: 600; }
+.anime-info-box p { color: #ccc; font-size: 13px; line-height: 1.6; }
+
+.comments-section { background: var(--bg-card); padding: 20px; border-radius: 8px; }
+.comments-section h2 { font-size: 16px; margin-bottom: 15px; color: white; border-bottom: 1px solid #333; padding-bottom: 10px;}
+
+/* Bölüm Listesi */
+.ep-list-header {
+    background: #1e1f24; padding: 12px; border-radius: 8px 8px 0 0;
+    font-weight: bold; color: var(--primary); font-size: 14px; text-align: center;
+}
+.ep-list-body {
+    background: var(--bg-card); padding: 10px; max-height: 500px;
+    overflow-y: auto; border-radius: 0 0 8px 8px;
+}
+/* Scrollbar İyileştirmesi */
+.ep-list-body::-webkit-scrollbar { width: 6px; }
+.ep-list-body::-webkit-scrollbar-track { background: #18191d; }
+.ep-list-body::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+.ep-btn {
+    display: flex; align-items: center; padding: 10px 12px; margin-bottom: 5px;
+    background: #18191d; border-radius: 5px; cursor: pointer;
+    transition: 0.2s; font-size: 12px; color: #ccc; text-decoration: none;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ep-btn:hover, .ep-btn.active { 
+    background: #333; color: #fff; border-left: 3px solid var(--primary);
+}
+.ep-btn i { margin-right: 10px; color: var(--primary); font-size: 11px; }
+
+
+/* --- FOOTER (DÜZELTİLDİ) --- */
 footer {
-    background-color: #151618;
-    padding: 50px 0 20px 0;
+    background-color: #111;
+    padding: 40px 0 20px 0;
     margin-top: auto;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid #222;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 40px; 
+    grid-template-columns: 1.5fr 0.5fr 0.5fr; /* Sol geniş, sağdakiler dar */
+    gap: 30px; 
     max-width: 1200px; 
     margin: 0 auto; 
     padding: 0 20px;
-    text-align: left;
+    align-items: start;
 }
 
+.footer-col { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-col p { color: #888; font-size: 13px; line-height: 1.6; margin-top: 10px; max-width: 90%; }
 .footer-col h3 { 
-    color: #fff; font-size: 16px; margin-bottom: 20px; font-weight: 600; 
+    color: #fff; font-size: 15px; margin-bottom: 15px; font-weight: 600; 
+    border-left: 3px solid var(--primary); padding-left: 10px;
 }
-.footer-col p { 
-    color: #888; font-size: 14px; line-height: 1.6; max-width: 400px; 
-}
-.footer-col ul { list-style: none; padding: 0; }
-.footer-col ul li { margin-bottom: 12px; }
+
+.footer-col ul { padding: 0; list-style: none; }
+.footer-col ul li { margin-bottom: 8px; }
 .footer-col ul li a { 
-    color: #aaa; font-size: 14px; transition: 0.2s; 
+    color: #aaa; font-size: 13px; transition: 0.2s; display: block;
 }
-.footer-col ul li a:hover { color: var(--primary); }
+.footer-col ul li a:hover { color: var(--primary); padding-left: 5px; }
 
 .legal-warning {
-    margin-top: 50px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 40px;
+    padding: 20px;
+    background: #0d0d0d;
+    border-top: 1px solid #222;
     text-align: center;
 }
-.legal-text {
-    color: #555; font-size: 12px; margin-bottom: 10px;
-}
-.copyright-text {
-    color: #777; font-size: 13px;
-}
-.dev-credit { color: var(--primary); text-decoration: none; font-weight: 500; }
+.legal-text { color: #555; font-size: 11px; margin-bottom: 5px; }
+.copyright-text { color: #777; font-size: 12px; }
+.dev-credit { color: var(--primary); font-weight: 500; }
 
-/* --- MOBİL UYUMLULUK (RESPONSIVE) --- */
-@media (max-width: 768px) {
+
+/* --- RESPONSIVE (MOBİL UYUM) --- */
+@media (max-width: 900px) {
     /* Header */
-    header { padding: 10px 15px; height: 60px; }
-    .logo img { height: 30px; }
-    .search-box { width: 100%; max-width: 200px; }
+    header { padding: 0 15px; height: 55px; }
+    .search-box { width: 160px; }
+    .search-box input { font-size: 11px; padding: 6px 30px 6px 12px; }
     
-    /* Spotlight Mobilde Küçülmeli ve Stack Olmalı */
-    .hero-wrapper { height: auto; min-height: 350px; padding-bottom: 40px; }
-    .hero-content { flex-direction: column; text-align: center; padding: 40px 20px; gap: 20px; }
-    .hero-poster { display: none; /* Mobilde posteri gizle */ }
-    .hero-info h2 { font-size: 28px; }
-    .hero-meta { justify-content: center; font-size: 12px; }
+    /* Spotlight (Eski Haline Dönüş) */
+    .hero-wrapper { height: 350px; } /* Daha kısa */
+    .hero-content { 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: flex-start; /* Sola hizalı */
+        text-align: left;
+        padding-top: 60px;
+    }
+    .hero-poster { display: none; } /* Poster gizlendi */
+    .hero-info { width: 100%; }
+    .hero-info h2 { font-size: 28px; text-shadow: 0 2px 10px #000; }
+    .hero-meta { color: #eee; }
     
-    /* Slider Butonları Mobilde Daha Aşağıda */
-    .slider-nav-btn { bottom: 10px; width: 40px; height: 40px; font-size: 16px; }
-    .prev-slide { right: 60px; left: auto; }
-    .next-slide { right: 10px; }
+    /* İzleme Sayfası Mobilde Alt Alta */
+    .watch-container { flex-direction: column; }
+    .sidebar { width: 100%; }
+    .ep-list-body { max-height: 300px; }
 
-    /* Liste ve Grid */
+    /* Footer Mobilde Tek Kolon */
+    .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+    
+    /* Liste Grid Ayarı */
     #anime-listesi { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    
-    /* Kategori Kartları */
-    .genre-row .anime-card { min-width: 140px; max-width: 140px; }
-
-    /* Footer */
-    .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
-    .footer-col p { max-width: 100%; margin: 0 auto; }
+    .anime-card { width: 100%; }
 }
