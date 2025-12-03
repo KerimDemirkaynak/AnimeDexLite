@@ -220,7 +220,7 @@ header {
 
 /* Bölüm Listesi */
 .ep-list-header {
-    background: #1e1f24; padding: 12px; border-radius: 8px 8px 0 0;
+    background: #000000; padding: 12px; border-radius: 8px 8px 0 0;
     font-weight: bold; color: var(--primary); font-size: 14px; text-align: center;
 }
 .ep-list-body {
