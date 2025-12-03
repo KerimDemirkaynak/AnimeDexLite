@@ -1,23 +1,23 @@
 const ANIME_DETAY = {
-  "isim": "Beyblade (1. Sezon)",
+  "isim": "Beyblade",
   "ozet": "Takao ve arkadaşlarının efsanevi maceraları başlıyor...",
   "yil": "2001", 
   "tur": "Aksiyon, Spor",
   "bolumler": [
     {
       "no": 1,
-      "baslik": "Beyblade Savaşçısı Takao",
+      "baslik": "Fragman 1",
       // ÇOKLU KAYNAK YAPISI
       "kaynaklar": [
-        { "isim": "Sibnet", "link": "https://www.dailymotion.com/video/x20zviz" },
-        { "isim": "Yedek Player", "link": "https://www.youtube.com/embed/VIDEO_ID" } 
+        { "isim": "Dailymotion", "link": "https://www.dailymotion.com/video/x20zviz" },
+        { "isim": "YouTube", "link": "https://youtu.be/lgYnu5T8OHY" } 
       ]
     },
     {
       "no": 2,
-      "baslik": "Ejderin Gücü",
+      "baslik": "Fragman 2",
       "kaynaklar": [
-         { "isim": "Sibnet", "link": "https://video.sibnet.ru/shell.php?videoid=4768205" }
+         { "isim": "YouTube", "link": "https://youtu.be/CWZOBDvvUXw" }
       ]
     }
     // ... diğer bölümler
